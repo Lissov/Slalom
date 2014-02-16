@@ -5,9 +5,15 @@
     android:gravity="center"
     android:orientation="vertical" >
 
-    <TextView
+    <Spinner
+		android:id="@+id/spLevels"
+        android:layout_width="200px"
+        android:layout_height="wrap_content"
+		android:entries="@array/levels"/>
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
-
+        android:text="@string/start" 
+		android:onClick="startClick"/>
+	
 </LinearLayout>
