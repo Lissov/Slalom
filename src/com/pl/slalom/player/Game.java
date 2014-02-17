@@ -5,6 +5,7 @@ import com.pl.slalom.track.*;
 import android.graphics.*;
 import android.widget.*;
 import android.content.*;
+import com.pl.slalom.player.ski.*;
 
 public class Game
 {
@@ -16,10 +17,12 @@ public class Game
 	private int tramplinFly;
 	private long startTime;
 	private long finishTime;
+	private ISki ski;
 	
-	public Game(int slopeN){
+	public Game(int slopeN, int skiN){
 		slope = new SlopeManager().getSlope(slopeN);
 		route = new Route(slope.startPos, 0);
+		ski = new SkiManager().getSki(skiN);
 		
 		finished = false;
 		failed = false;
@@ -29,37 +32,46 @@ public class Game
 		finishTime = 0;
 	}
 	
+	private long moveStart;
+	public boolean makingMove;
+	public int makingX;
+	public int makingY;
+	
 	public boolean[][] getPossibleMoves(){
-		int mc = Constants.MaxPossibleMove;
-		int mcnt = 2 * Constants.MaxPossibleMove + 1;
-		boolean[][] result = new boolean[mcnt][mcnt];
-		for (int x = 0; x < mcnt; x++)
-			for (int y = 0; y < mcnt; y++)
-				result[x][y] = false;
-				
-		if (finished || failed)
-			return result;
-		
-		if (route.currentPosition == 0){
-			result[mc][mc + 1] = true;
-			return result;
-		}
-		
-		if(tramplinFly > 0)	{
-			result[mc][mc] = true;
-			return result;
-		}
-		
-		result[mc][mc] = true;
-		result[mc+1][mc] = true;
-		result[mc-1][mc] = true;
-		result[mc][mc+1] = true;
-		result[mc][mc-1] = true;
-		
-		return result;
+		Point last = route.getLastMove();
+		return ski.getPossibleMoves(last.x, last.y,
+									!finished && !failed && !makingMove, 
+									route.currentPosition == 0,
+									tramplinFly > 0);
 	}
 	
 	public void makeMove(int dx, int dy){
+		makingX = dx;
+		makingY = dy;
+		moveStart = System.currentTimeMillis();
+		makingMove = true;
+	}
+	
+	public float getMovePercentage(){
+		if (!makingMove) return 1.0f;
+		
+		long ct = System.currentTimeMillis();
+		long len = (ct - moveStart);
+		
+		if (len > Constants.moveCounted){
+			movePerformed(makingX, makingY);
+			return 0f;
+		}
+		
+		if (len > Constants.moveLength){
+			return 1f;
+		}
+		
+		return ((float)len) / Constants.moveLength;
+	}
+	
+	private void movePerformed(int dx, int dy){
+		makingMove = false;
 		if (route.currentPosition == 0)
 			startTime = System.currentTimeMillis();
 		
@@ -67,14 +79,14 @@ public class Game
 		int prY = route.positionsY[route.currentPosition];
 		
 		Point last = route.getLastMove();
-		route.makeMove(last.x + dx, last.y + dy);
+		route.makeMove(dx, dy);
 		
 		int x = route.positionsX[route.currentPosition];
 		int y = route.positionsY[route.currentPosition];
 		
 		Gate nextg = slope.gates[route.passedCount];
-		while (isCross(nextg.position, nextg.leftPos, nextg.rightPos,
-				prX, prY, x, y)){
+		while (getCross(nextg.position, nextg.leftPos, nextg.rightPos,
+				prX, prY, x, y) == PassType.Pass){
 			route.passedCount++;
 		
 	 		if (route.passedCount == slope.gates.length)
@@ -88,16 +100,29 @@ public class Game
 		}
 					
 		for (int i = 0; i < slope.gates.length; i++){
-			if (isCross(nextg.position, nextg.leftPos, nextg.rightPos,
-					x, y, prX, prY))
+			PassType crossS = getCross(nextg.position, nextg.leftPos, nextg.rightPos,
+									   prX, prY, x, y);
+			if (crossS == PassType.Hit)
 				failed = true;
+				
+			PassType crossO = getCross(nextg.position, nextg.leftPos, nextg.rightPos,
+								 x, y, prX, prY);
+			if (crossO == PassType.Pass)
+				failed = true;
+		}
+		
+		Gate finish = slope.gates[slope.gates.length - 1];
+		PassType finalPass = getCross(finish.position, finish.leftPos, finish.rightPos, prX, prY, x, y);
+		if (finalPass == PassType.Miss || finalPass == PassType.Hit){
+			failed = true;
 		}
 		
 		if (tramplinFly == 0){
 			int i = 0;
 			while (i < slope.tramplins.length){
 				Tramplin t = slope.tramplins[i];
-				if (isCross(t.position, t.left, t.right, prX, prY, x, y)){
+				PassType tpt = getCross(t.position, t.left, t.right, prX, prY, x, y);
+				if (tpt == PassType.Pass || tpt == PassType.Hit){
 					tramplinFly = t.power;
 					i = slope.tramplins.length; // stop in, only one tramplin per move
 				}
@@ -106,7 +131,8 @@ public class Game
 			
 			for (int j = 0; j < slope.tramplins.length; j++){
 				Tramplin t = slope.tramplins[j];
-				if (isCross(t.position, t.left, t.right, x, y, prX, prY)){
+				PassType tpt = getCross(t.position, t.left, t.right, x, y, prX, prY);
+				if (tpt == PassType.Pass || tpt == PassType.Hit){
 					failed = true; // crash in tramplin
 				}
 			}
@@ -115,15 +141,21 @@ public class Game
 		}
 	}
 	
-	private boolean isCross(float y, float left, float right,
+	enum PassType { None, Pass, Miss, Hit }
+	
+	private PassType getCross(float y, float left, float right,
 		int x1, int y1, int x2, int y2)
 	{
 		if (y < y1 || y > y2) 
-			return false;
+			return PassType.None;
 			
 		float crossX = x1 + (x2 - x1) * (y - y1) / (y2 - y1);
 		
-		return (crossX > left && crossX < right);
+		if (crossX > left && crossX < right)
+			return PassType.Pass;
+		if (crossX == left || crossX == right)
+			return PassType.Hit;
+		return PassType.Miss;
 	}
 	
 	public float getTime(){

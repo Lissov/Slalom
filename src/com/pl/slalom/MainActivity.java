@@ -25,6 +25,7 @@ public class MainActivity extends Activity
 		
 		Intent igame = new Intent(this, GameActivity.class);
 		igame.putExtra(Constants.Extra_LevelNumber, levelnum);
+		igame.putExtra(Constants.Extra_SkiNumber, 10);
 		startActivity(igame);
 	}
 }

@@ -6,15 +6,21 @@ import android.widget.*;
 import com.pl.slalom.track.*;
 import com.pl.slalom.*;
 import com.pl.slalom.player.*;
+import java.util.*;
+import android.app.*;
 
 public class SlopeView extends View
 {
-	private Context context;
+	private Activity context;
+	private ICommandHandler cmdHandler;
+	private Game game;
 	private Slope slope;
 	private Route route;
 	private int canvasWidth = 1000;
 	private float borderRel = 0.1f;
 	private float[] treeOffsets;
+	
+	private boolean drawNextStep;
 	
 	private float yProgress = -2.5f;
 	
@@ -28,22 +34,39 @@ public class SlopeView extends View
 	private PlayerDrawer playerDrawer = new PlayerDrawer();
 	private RouteDrawer routeDrawer = new RouteDrawer();
 	private PassDrawer passDrawer = new PassDrawer();
+	private NextMoveDrawer moveDrawer = new NextMoveDrawer();
+	private MakingMoveDrawer makeMoveDrawer = new MakingMoveDrawer();
 	
 	private String textStart;
 	private String textFinish;
 	private String textGo;
 	
-	public SlopeView(Context context, Slope slope, Route route){
+	public SlopeView(Activity context, Game game, boolean drawNextStep, ICommandHandler cmdHandler){
 		super(context);
-		this.slope = slope;
-		this.route = route;
+		this.slope = game.slope;
+		this.route = game.route;
+		this.game = game;
 		this.context = context;
+		this.drawNextStep = drawNextStep;
+		this.cmdHandler = cmdHandler;
 		
 		initBorderTrees();
 
 		textStart = getResources().getString(R.string.flag_start);
 		textFinish = getResources().getString(R.string.flag_finish);
 		textGo = getResources().getString(R.string.flag_go);
+		
+		yProgress = -0.065f * game.slope.width;
+
+		Timer t = new Timer("sloperefresher");
+		t.schedule(new TimerTask(){
+				public void run() { redraw(); }
+			}, 1000, 40);
+	}
+
+	private void redraw(){
+		context.runOnUiThread(new Runnable(){ 
+				public void run() { invalidate(); } });
 	}
 	
 	private void initBorderTrees(){
@@ -68,9 +91,12 @@ public class SlopeView extends View
 
 			drawField(canvas);
 			drawTramplins(canvas);
+			if (drawNextStep)
+				drawMove(canvas);
 			drawRoute(canvas);
 			drawBorders(canvas);
 			drawGates(canvas);
+			drawMakingMove(canvas);
 			
 		} catch (Exception ex){
 			Toast.makeText(context, "Error: " + ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -94,8 +120,30 @@ public class SlopeView extends View
 		playerDrawer.init(context, coordsTransform);
 		routeDrawer.init(context, coordsTransform);
 		passDrawer.init(context, coordsTransform);
+		moveDrawer.init(context, coordsTransform);
+		makeMoveDrawer.init(context, coordsTransform);
 	}
 	
+	private void drawMakingMove(Canvas canvas){
+		if (game.makingMove){
+			float progress = game.getMovePercentage();
+			makeMoveDrawer.draw(canvas,
+								route.positionsX[route.currentPosition],
+								route.positionsY[route.currentPosition],
+								game.makingX, game.makingY, progress);
+		}
+	}
+	
+	private void drawMove(Canvas canvas)
+	{
+		boolean[][] posMoves = game.getPossibleMoves();
+		int cx = route.positionsX[route.currentPosition];
+		int cy = route.positionsY[route.currentPosition];
+		Point lm = route.getLastMove();
+		moveDrawer.draw(canvas, cx, cy, cx + lm.x, cy + lm.y,
+						posMoves);
+	}
+
 	private void drawField(Canvas canvas)
 	{
 		fieldDrawer.drawField(canvas, slope.width);
@@ -158,5 +206,52 @@ public class SlopeView extends View
 		}
 		
 		playerDrawer.draw(canvas, route.positionsX[cp], route.positionsY[cp], true);
+	}
+
+	@Override
+	public boolean onTouchEvent(MotionEvent event)
+	{
+		try{
+			if (event.getAction() == MotionEvent.ACTION_DOWN){
+				Point touched = getTouchedNextMove(event.getX(), event.getY());
+
+				if (touched == null)
+					return true;
+
+				cmdHandler.onMove(touched.x, touched.y);
+
+				return true;
+			}
+
+			return super.onTouchEvent(event);
+		} catch(Exception ex){
+			Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
+			return false;
+		}
+	}
+	
+	private Point getTouchedNextMove(float x, float y){
+		PointF point = coordsTransform.toFieldPoint(x, y);
+		int xs = Math.round(point.x);
+		int ys = Math.round(point.y);
+		
+		if ((point.x - xs)*(point.x - xs) + (point.y - ys)*(point.y - ys) > Constants.moveClickR2)
+		{
+			return null;
+		}
+		
+		Point lm = route.getLastMove();
+		xs = xs - route.positionsX[route.currentPosition] - lm.x;
+		ys = ys - route.positionsY[route.currentPosition] - lm.y;
+		
+		int m = Constants.MaxPossibleMove;
+		if (xs < -m  || xs > m || ys < -m || ys > m)
+			return null;
+
+		boolean[][] posMoves = game.getPossibleMoves();
+		if (!posMoves[xs + m][ys + m])
+			return null;
+			
+		return new Point(xs + lm.x, ys + lm.y);
 	}
 }

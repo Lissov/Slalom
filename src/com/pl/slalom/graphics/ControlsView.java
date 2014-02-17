@@ -6,10 +6,12 @@ import android.content.*;
 import com.pl.slalom.*;
 import com.pl.slalom.graphics.controls.*;
 import android.widget.*;
+import java.util.*;
+import android.app.*;
 
 public class ControlsView extends View
 {
-	private Context context;
+	private Activity context;
 	private Game game;
 	ICommandHandler cmdHandler;
 	private float btnSize;
@@ -31,11 +33,21 @@ public class ControlsView extends View
 	String textTurns;
 	String textTime;
 	
-	public ControlsView(Context context, Game game, ICommandHandler handler){
+	public ControlsView(Activity context, Game game, ICommandHandler handler){
 		super(context);
 		this.context = context;
 		this.game = game;
 		this.cmdHandler = handler;
+		
+		Timer t = new Timer("refresher");
+		t.schedule(new TimerTask(){
+			public void run() { redraw(); }
+		}, 1000, 100);
+	}
+	
+	private void redraw(){
+		context.runOnUiThread(new Runnable(){ 
+			public void run() { invalidate(); } });
 	}
 	
 	@Override
@@ -60,7 +72,7 @@ public class ControlsView extends View
 				else
 				{
 					canvas.drawText(textGates, textSize * 0.5f, textSize * 1.5f, paintTextT);
-					canvas.drawText("" + (game.route.passedCount - 1), textSize * 8f, textSize * 1.5f, paintTextG);
+					canvas.drawText("" + (game.route.passedCount - 1), textSize * 7f, textSize * 1.5f, paintTextG);
 				}
 			}
 		}
@@ -68,8 +80,8 @@ public class ControlsView extends View
 		canvas.drawText(textTurns, textSize * 0.5f, textSize * 3f, paintTextT);
 		canvas.drawText(textTime, textSize * 0.5f, textSize * 4f, paintTextT);
 		
-		canvas.drawText("" + game.route.currentPosition, textSize * 8f, textSize * 3f, paintTextN);
-		canvas.drawText("" + game.getTime(), textSize * 8f, textSize * 4f, paintTextN);		
+		canvas.drawText("" + game.route.currentPosition, textSize * 4f, textSize * 3f, paintTextN);
+		canvas.drawText("" + game.getTime(), textSize * 4f, textSize * 4f, paintTextN);		
 	}
 	
 	private void drawMoves(Canvas canvas){ 	
@@ -168,7 +180,8 @@ public class ControlsView extends View
 			if (!posMoves[touched.x + m][touched.y + m])
 				return true;
 			
-			cmdHandler.onMove(touched.x, touched.y);
+			Point lm = game.route.getLastMove();
+			cmdHandler.onMove(touched.x + lm.x, touched.y + lm.y);
 			
 			return true;
 		}

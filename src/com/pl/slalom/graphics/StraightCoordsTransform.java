@@ -1,4 +1,5 @@
 package com.pl.slalom.graphics;
+import android.graphics.*;
 
 public class StraightCoordsTransform implements ICoordsTransform
 {
@@ -41,6 +42,14 @@ public class StraightCoordsTransform implements ICoordsTransform
 	public float getScreenY(float gamey)
 	{
 		return canvasHeight - ( (gamey - yProgress) * scale);
+	}
+
+	@Override
+	public PointF toFieldPoint(float screenx, float screeny)
+	{
+		return new PointF(
+			(screenx - borderAbs) / scale,
+			(canvasHeight - screeny) / scale + yProgress);
 	}
 	
 	@Override

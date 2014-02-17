@@ -21,11 +21,12 @@ public class GameActivity extends Activity implements ICommandHandler
 		setContentView(R.layout.game);
 		
 		int levelnum = getIntent().getIntExtra(Constants.Extra_LevelNumber, 1);
+		int skinum = getIntent().getIntExtra(Constants.Extra_SkiNumber, 0);
 		
-		game = new Game(levelnum);
+		game = new Game(levelnum, skinum);
 		
 		LinearLayout llSlope = (LinearLayout)findViewById(R.id.llSlope);
-		slopeView = new SlopeView(this, game.slope, game.route);
+		slopeView = new SlopeView(this, game, Constants.controlsOnSlope, this);
 		llSlope.addView(slopeView);
 		
 		LinearLayout llControls = (LinearLayout)findViewById(R.id.llControls);

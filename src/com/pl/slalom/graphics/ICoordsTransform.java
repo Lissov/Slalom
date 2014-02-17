@@ -1,4 +1,5 @@
 package com.pl.slalom.graphics;
+import android.graphics.*;
 
 public interface ICoordsTransform
 {
@@ -9,4 +10,5 @@ public interface ICoordsTransform
 	float getScaleYAtPoint(float gamex, float gamey);
 	float getMinYVisible();
 	float getMaxYVisible();
+	PointF toFieldPoint(float screenx, float screeny);
 }

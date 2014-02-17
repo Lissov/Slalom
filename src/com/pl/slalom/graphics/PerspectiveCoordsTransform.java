@@ -1,4 +1,5 @@
 package com.pl.slalom.graphics;
+import android.graphics.*;
 
 public class PerspectiveCoordsTransform implements ICoordsTransform
 {
@@ -52,6 +53,15 @@ public class PerspectiveCoordsTransform implements ICoordsTransform
 	public float getScreenY(float gamey)
 	{
 		return canvasHeight - ( (gamey - yProgress) * scale);
+	}
+	
+	@Override
+	public PointF toFieldPoint(float screenx, float screeny)
+	{
+		float gamey = (canvasHeight - screeny) / scale + yProgress;
+		return new PointF(
+			(screenx - borderAbs - + (1f - perspFactor(gamey)) * 0.5f * trackW) / (scale * perspFactor(gamey)),
+			gamey);
 	}
 	
 	@Override

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<color name="white">#FFFFFF</color>
+	<color name="snow">#FFFAFA</color>
+	<color name="grid">#EBE6E6</color>
+	<color name="firGround">#A0A0A0</color>
+	<color name="firLeaves">#009900</color>
+	<color name="firTrunk">#B8860B</color>
+	<color name="poleGround">#D2D2D2</color>
+	<color name="SFPole">#4C0099</color>
+	<color name="bannerStart">#FF3333</color>
+	<color name="bannerFinish">#3399FF</color>
+	<color name="bannerText">#CCFF99</color>
+	<color name="bannerTxtStart">#000000</color>
+	<color name="bannerTxtFinish">#000000</color>
+	<color name="bannerTxtText">#000000</color>
+	<color name="rope">#000000</color>
+	<color name="flag1">#FF2222</color>
+	<color name="flag2">#2222FF</color>
+	<color name="flag3">#22FF22</color>
+	<color name="tramplin">#505050</color>
+
+	<color name="routeLine">#BBBBBB</color>
+	<color name="playerActive">#FF0000</color>
+	<color name="playerInactive">#AAAAAA</color>
+
+	<color name="controlCircleActive">#CC1111</color>
+	<color name="controlCircleInactive">#BBAAAA</color>
+	<color name="controlGridA">#6B6666</color>
+	<color name="controlGridI">#1B1616</color>
+	<color name="controlMoveA">#CC0000</color>
+	<color name="controlMoveI">#440000</color>
+
+	<color name="controlLastMove">#444444</color>
+
+	<color name="controlStatusText">#999999</color>
+	<color name="controlStatusNeutral">#EEEEEE</color>
+	<color name="controlStatusGood">#55FF55</color>
+	<color name="controlStatusBad">#EE4444</color>
+
+	<color name="gatePassed">#33FF33</color>
+	<color name="gateFailed">#FF3333</color>
+
+	<color name="slopeMove">#FFFF00</color>
+	<color name="slopeMoveArrow">#EEEEEE</color>
+
+	<color name="drawingLine">#FF5555</color>
+	<color name="pencilGraphite">#A0A0A0</color>
+	<color name="pencilWood">#CCAA00</color>
+	<color name="pencilHandle1">#FFFF00</color>
+	<color name="pencilHandle2">#CCCC00</color>
+	<color name="pencilHandle3">#AAAA00</color>	
+
+</resources>
