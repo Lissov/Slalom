@@ -4,6 +4,8 @@ public class Slope
 {
 	public int width;
 	
+	public String name;
+	
 	public Gate[] gates;
 	public Tramplin[] tramplins;
 	

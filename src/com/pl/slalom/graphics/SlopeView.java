@@ -66,7 +66,46 @@ public class SlopeView extends View
 
 	private void redraw(){
 		context.runOnUiThread(new Runnable(){ 
-				public void run() { invalidate(); } });
+				public void run() { 
+					updateProgress();	
+					invalidate(); 
+				} 
+			});
+	}
+	
+	private float screenSpeed = 0;
+	private long lastUpdate = 0;
+	private void updateProgress(){
+		if (lastUpdate == 0){
+			lastUpdate = System.currentTimeMillis();
+			return;
+		}
+		
+		float minY = coordsTransform.getMinYVisible();
+		float maxY = coordsTransform.getMaxYVisible();
+		float maxF = slope.gates[slope.gates.length - 1].position;
+		/*if (minY < 0 && maxY > maxF)
+			return;*/
+	
+		float cp = route.positionsY[route.currentPosition];
+		float scrS = (maxY - minY);
+		float noMove = scrS / 10;
+		if (cp - minY < (noMove)) 
+		{
+			screenSpeed = 0;
+			return;
+		}
+		
+		screenSpeed = (float)Math.pow(3 * (cp - minY - noMove) / scrS, 3);
+		if (maxY > maxF){
+			screenSpeed *= (maxF + 0.2f*scrS - maxY) / (0.2f*scrS);
+		}
+		
+		long nt = System.currentTimeMillis();
+		float dy = screenSpeed * (nt - lastUpdate) / 1000;
+		if (dy > 1) dy = 1;
+		yProgress += dy;
+		lastUpdate = nt;
 	}
 	
 	private void initBorderTrees(){

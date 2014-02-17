@@ -16,8 +16,8 @@ public class SkiManager
 			case 10:
 				return new Generic("Basic downhill", 50, 
 								   new int[] {0, 100, 0},
-								   0.45f, 0.4f,
-								   1, 0);
+								   0.65f, 0.99f,
+								   0f, 1f);
 			default:
 				return null;
 		}
