@@ -1,0 +1,64 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+	<LinearLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_marginTop="20px"
+		android:gravity="bottom">
+		<TextView 
+			android:layout_width="wrap_content"
+			android:layout_height="60px"
+			android:layout_marginLeft="20px"
+			android:text="@string/mp_playersCount"
+			android:textSize="@dimen/text_size"/>
+		<Spinner
+			android:layout_width="100px"
+			android:layout_height="60px"
+			android:id="@+id/mp_spinPlCount"
+			android:textSize="@dimen/text_size" />
+		
+		<TextView 
+			android:layout_width="wrap_content"
+			android:layout_height="60px"
+			android:layout_marginLeft="30px"
+			android:text="@string/mp_mode"
+			android:textSize="@dimen/text_size" />
+		<Spinner
+			android:layout_width="300px"
+			android:layout_height="60px"
+			android:id="@+id/mp_spinMode"
+			android:textSize="@dimen/text_size"/>
+
+		<TextView 
+			android:layout_width="wrap_content"
+			android:layout_height="60px"
+			android:layout_marginLeft="30px"
+			android:text="@string/mp_track"
+			android:textSize="@dimen/text_size"/>
+		<Spinner
+			android:layout_width="300px"
+			android:layout_height="60px"
+			android:id="@+id/mp_spinTrack"
+			android:textSize="@dimen/text_size"/>
+	</LinearLayout>
+	<!--shape android:shape="rectangle">
+		<corners
+			android:radius="3dp"
+			android:topRightRadius="0dp"
+			android:bottomRightRadius="0dp"
+			android:bottomLeftRadius="0dp" />
+		<stroke
+			android:width="1dp"
+			android:color="@android:color/white" /-->
+		
+		<LinearLayout
+			android:id="@+id/mp_llPlayers"
+			android:layout_width="fill_parent"
+			android:layout_height="fill_parent"
+			android:orientation="vertical" />
+	<!--/shape-->
+</LinearLayout>

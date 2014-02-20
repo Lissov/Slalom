@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="start">Start race!</string>
     <string name="app_name">PencilSlalom</string>
-
+    
+	<string name="tutorial">Tutorial</string>
+	<string name="career">Career</string>
+	<string name="multiplayer">Multiplayer</string>
+	
+	<string name="mp_playersCount">Players count: </string>
+	<string name="mp_mode">Mode: </string>
+	<string name="mp_track">Track: </string>
+	<string name="mp_playerName">Name: </string>
+	<string name="mp_playerSki">Ski: </string>
+	<string name="mp_playerCountry">Country: </string>
+	
 	<string name="flag_start">START</string>
 	<string name="flag_finish">FINISH</string>
 	<string name="flag_go">GO!</string>
@@ -16,4 +26,9 @@
 	<string name="status_turns">Turns: </string>
 	<string name="status_time">Time: </string>
 	
+	<string name="mp_modeTurns">Turns</string>
+	<string name="mp_modeTime">Time</string>
+	
+	<!--string name="UA_full">Ukraine</string>
+	<string name="AUT_full">Austria</string-->
 </resources>

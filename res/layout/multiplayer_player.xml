@@ -1,0 +1,41 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="50px"
+    android:orientation="horizontal">
+    
+	<TextView
+		android:layout_width="120px"
+		android:layout_height="fill_parent"
+		android:layout_marginLeft="50px"
+		android:text="@string/mp_playerCountry" 
+		android:textSize="@dimen/text_size"/>
+	<Spinner
+		android:id="@+id/mpPlayerCountry"
+		android:layout_width="300px"
+		android:layout_height="fill_parent"
+		android:textSize="@dimen/text_size"/>
+
+	<TextView
+		android:layout_width="120px"
+		android:layout_height="fill_parent"
+		android:layout_marginLeft="50px"
+		android:text="@string/mp_playerSki" 
+		android:textSize="@dimen/text_size"/>
+	<Spinner
+		android:id="@+id/mpPlayerSki"
+		android:layout_width="300px"
+		android:layout_height="fill_parent"
+		android:textSize="@dimen/text_size"/>
+	
+	<TextView
+		android:layout_width="120px"
+		android:layout_height="fill_parent"
+		android:text="@string/mp_playerName" 
+		android:textSize="@dimen/text_size"/>
+	<EditText
+		android:id="@+id/mpPlayerName"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:textSize="@dimen/text_size"/>
+		
+</LinearLayout>
