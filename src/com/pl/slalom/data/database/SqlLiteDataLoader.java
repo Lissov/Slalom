@@ -246,10 +246,6 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 	public void updateCompetition(Competition competition){
 		SQLiteDatabase db = this.getWritableDatabase();
 		
-		Toast.makeText(context, "R: " + 
-			competition.races.get(0).playerRuns[0][0].runResult.status, 
-			Toast.LENGTH_SHORT).show();
-
 		ContentValues v;
 
 		for (int ir = 0; ir < competition.races.size(); ir++){
@@ -354,7 +350,8 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 				
 				RaceRun rr = new RaceRun(getStatus(cursor.getInt(5)));
 				rr.runResult.turns = cursor.getInt(3);
-				rr.runResult.time = cursor.getFloat(4);
+				float time = cursor.getFloat(4);
+				rr.runResult.time = Math.round(time * 1000) / 1000f;
 				rr.id = id;
 				r.playerRuns[plN][runN] = rr;
 			} while (cursor.moveToNext());
@@ -363,5 +360,18 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		
 		return c;
 	}
+
+	public void ExecuteNonQuery(String sql){
+		SQLiteDatabase db = getWritableDatabase();
+		
+		db.execSQL(sql);
+		
+		db.close();
+	}
 	
+	public Cursor ExecuteQuery(String sql){
+		SQLiteDatabase db = getWritableDatabase();
+
+		return db.rawQuery(sql, null);
+	}
 }

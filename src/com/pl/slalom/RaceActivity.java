@@ -32,25 +32,34 @@ public class RaceActivity extends Activity
 		btnStartNext.setEnabled(false);
 		
 		addHeader();
-		
-		update();
+
+		try{
+			comp = DataManager.getInstance().getCompetition();		
+			race = comp.races.get(comp.currentRace);
+			results = buildPlayerResults();
+
+			addRacers(comp.competitors.size());
+			update();
+		}
+		catch(Exception ex){
+			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	@Override
 	protected void onResume()
 	{
+		super.onResume();
 		update();
 	}
 	
 	private void update(){
 		try{
-			comp = DataManager.getInstance().getCompetition();			
+			//reload may be redundant
+			comp = DataManager.getInstance().getCompetition();		
 			race = comp.races.get(comp.currentRace);
+			
 			results = buildPlayerResults();
-
-			Toast.makeText(this, "R: " + race.playerRuns[0][0].runResult.status, Toast.LENGTH_SHORT).show();
-
-			addRacers(comp.competitors.size());
 			showData();
 
 			prepareNextTurn();
@@ -74,7 +83,6 @@ public class RaceActivity extends Activity
 				@Override
 				public void updateResult(RunResult result){
 					race.playerRuns[compN][runNum].runResult = result;
-					Toast.makeText(a, "saving", Toast.LENGTH_SHORT).show();
 					DataManager.getInstance().storeCompetition(comp, false);
 				}
 			};
@@ -114,7 +122,7 @@ public class RaceActivity extends Activity
 			return -1;
 			
 		for (int i = 0; i< results.length; i++){
-			if (results[i].runCount < nextR)
+			if (results[i].runCount <= nextR)
 				return i;
 		}
 		
@@ -131,9 +139,9 @@ public class RaceActivity extends Activity
 				maxRuns = results[i].runCount;
 		}
 		if (maxRuns == minRuns) 
-			return minRuns + 1; // all completed this run, proceed to next run
+			return minRuns; // all completed this run, proceed to next run
 		
-		return minRuns;
+		return minRuns - 1; // we need "run index" instead of "run number" (0 instead of 1)
 	}
 	
 	private void addHeader(){
@@ -209,11 +217,12 @@ public class RaceActivity extends Activity
 			}
 			if (race.playerRuns[cNum][r].runResult.status == RunStatus.Finished){
 				if (bestRes == null 
-					|| RunResultComparator.getComparator()
-					.compare(bestRes, 
-						race.playerRuns[cNum][r].runResult
-					) 
-					< 0)
+					|| RunResultComparator
+						.getComparator()
+						.compare(bestRes, 
+							race.playerRuns[cNum][r].runResult
+						) > 0
+					)
 				{
 					bestRes = race.playerRuns[cNum][r].runResult;
 				}
@@ -225,7 +234,8 @@ public class RaceActivity extends Activity
 	
 	private int getRunCount(int cNum){
 		int runC = 0;
-		while (race.playerRuns[cNum][runC].runResult.status != RunStatus.NotStarted){
+		while (runC < race.runCount &&
+				race.playerRuns[cNum][runC].runResult.status != RunStatus.NotStarted){
 			runC++;
 		}
 		return runC;
@@ -236,8 +246,8 @@ public class RaceActivity extends Activity
 			public int compare(PlayerResult pr1, PlayerResult pr2){
 				if (pr1.bestRes == null && pr2.bestRes == null)
 					return Integer.compare(pr1.compN, pr2.compN);
-				if (pr1.bestRes == null) return -1;
-				if (pr2.bestRes == null) return +1;
+				if (pr1.bestRes == null) return +1;
+				if (pr2.bestRes == null) return -1;
 				return RunResultComparator.getComparator().compare(
 					pr1.bestRes, pr2.bestRes);
 			}

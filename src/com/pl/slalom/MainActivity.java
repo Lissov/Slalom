@@ -35,7 +35,7 @@ public class MainActivity extends Activity
 	}
 	
 	public void careerClick(View view){
-		
+		startActivity(new Intent(this, DatabaseActivity.class));
 	}
 	
 	public void multiplayerClick(View view){
@@ -72,7 +72,7 @@ public class MainActivity extends Activity
 		startActivity(isetup);		
 	}
 	private void continueMP(){
-		Intent isetup = new Intent(this, RaceActivity.class);
-		startActivity(isetup);				
+		Intent irace = new Intent(this, RaceActivity.class);
+		startActivity(irace);				
 	}
 }

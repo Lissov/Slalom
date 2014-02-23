@@ -87,6 +87,10 @@ public class Game
 		int x = route.positionsX[route.currentPosition];
 		int y = route.positionsY[route.currentPosition];
 		
+		if (x <= 0 || x >= slope.width){
+			failed = true;
+		}
+		
 		Gate nextg = slope.gates[route.passedCount];
 		while (getCross(nextg.position, nextg.leftPos, nextg.rightPos,
 				prX, prY, x, y) == PassType.Pass){

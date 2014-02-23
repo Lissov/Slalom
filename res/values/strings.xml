@@ -54,7 +54,7 @@
 	
 	<string name="run_complete1">Run complete (%1$s)</string>	
 	<string name="run_complete3">Turns: %1$d</string>	
-	<string name="run_complete4">Time: %1$f</string>	
+	<string name="run_complete4">Time: %1$s</string>	
 	<string name="run_completeContinue">Continue</string>	
 
 	<string name="run_back">Are you sure you want to give up the run?</string>	
