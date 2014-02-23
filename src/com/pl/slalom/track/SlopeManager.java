@@ -7,14 +7,14 @@ public class SlopeManager
 			case 1: return getSlope1();
 			case 2: return getSlope2();
 			case 3: return getSlope3();
+			case 10: return getSlope10();
 			default:
 				return null;
 		}
 	}
 	
 	private Slope getSlope1(){
-		Slope slope = new Slope();
-		slope.name = "Short training course";
+		Slope slope = new Slope(1, "Short training course");
 		slope.width = 12;
 		slope.gates = new Gate[5];
 		slope.tramplins = new Tramplin[0];
@@ -31,8 +31,7 @@ public class SlopeManager
 	}
 	
 	private Slope getSlope2(){
-		Slope slope = new Slope();
-		slope.name = "Tramplin training";
+		Slope slope = new Slope(2, "Tramplin training");
 		slope.width = 20;
 		slope.gates = new Gate[5];
 		slope.tramplins = new Tramplin[1];
@@ -49,8 +48,7 @@ public class SlopeManager
 	}
 
 	private Slope getSlope3(){
-		Slope slope = new Slope();
-		slope.name = "Slalom training course";
+		Slope slope = new Slope(3, "Slalom training course");
 		slope.width = 18;
 		slope.gates = new Gate[13];
 		slope.tramplins = new Tramplin[1];
@@ -71,6 +69,23 @@ public class SlopeManager
 		slope.gates[11] = new Gate(48.05f, 8, 10, GateType.Flags);
 		slope.gates[12] = new Gate(49.9f, 5, 13, GateType.Finish);
 		
+		return slope;
+	}
+
+	private Slope getSlope10(){
+		Slope slope = new Slope(10, "Hohe Wand Wiese");
+		slope.width = 13;
+		slope.gates = new Gate[6];
+		slope.tramplins = new Tramplin[0];
+
+		slope.startPos = 7;
+		slope.gates[0] = new Gate(0.1f, 6, 8, GateType.Start);
+		slope.gates[1] = new Gate(3.05f, 6, 8, GateType.Flags);
+		slope.gates[2] = new Gate(8.05f, 9, 12, GateType.Flags);
+		slope.gates[3] = new Gate(13.05f, 2, 5, GateType.Flags);
+		slope.gates[4] = new Gate(15.05f, 7, 10, GateType.Flags);
+		slope.gates[5] = new Gate(18.95f, 6, 8, GateType.Finish);
+
 		return slope;
 	}
 }

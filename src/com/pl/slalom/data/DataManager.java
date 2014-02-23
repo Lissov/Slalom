@@ -6,6 +6,7 @@ import com.pl.slalom.data.database.*;
 import java.util.*;
 import com.pl.slalom.track.*;
 import android.widget.*;
+import com.pl.slalom.data.race.*;
 
 public class DataManager
 {
@@ -58,4 +59,45 @@ public class DataManager
 		
 		return result;
 	}
+	
+	public Competition getCompetition(){
+		try{
+			return dataLoader.getCompetition(data.id);
+		} catch(Exception ex){
+			Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
+			return null;
+		}
+	}
+
+	public void storeCompetition(Competition value, boolean isnew){
+		try{
+			if (isnew){
+				dataLoader.insertCompetition(data.id, value);
+			}
+		
+			dataLoader.updateCompetition(value);
+		} catch(Exception ex){
+			Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
+		}
+	}
+	
+	public void dropAllCompetitions(){
+		Competition c = dataLoader.getCompetition(data.id);
+		while (c != null){
+			dataLoader.deleteCompetition(c);
+			c = dataLoader.getCompetition(data.id);
+		}
+	}
+	
+	private int rdC = 0;
+	private Hashtable<Integer, RunData> runData = new Hashtable<Integer, RunData>();
+	public int pushRunData(RunData data){
+		rdC++;
+		runData.put(rdC, data);
+		return rdC;
+	}
+	public RunData getRunData(int key){
+		return runData.get(key);
+	}
 }
+

@@ -6,11 +6,13 @@ import android.graphics.*;
 import android.widget.*;
 import android.content.*;
 import com.pl.slalom.player.ski.*;
+import com.pl.slalom.Utility.*;
 
 public class Game
 {
 	public Slope slope;
 	public Route route;
+	private IMoveCallback callback;
 	
 	public boolean finished;
 	public boolean failed;
@@ -19,7 +21,8 @@ public class Game
 	private long finishTime;
 	private ISki ski;
 	
-	public Game(int slopeN, int skiN){
+	public Game(int slopeN, int skiN, IMoveCallback callback){
+		this.callback = callback;
 		slope = new SlopeManager().getSlope(slopeN);
 		route = new Route(slope.startPos, 0);
 		ski = new SkiManager().getSki(skiN);
@@ -139,6 +142,8 @@ public class Game
 		} else {
 			tramplinFly--;
 		}
+		
+		callback.moveComplete();
 	}
 	
 	enum PassType { None, Pass, Miss, Hit }

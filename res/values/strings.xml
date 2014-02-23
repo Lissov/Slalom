@@ -13,6 +13,26 @@
 	<string name="mp_playerName">Name: </string>
 	<string name="mp_playerSki">Ski: </string>
 	<string name="mp_playerCountry">Country: </string>
+	<string name="mp_start">START</string>
+	
+	<string name="race_startNext">Start run</string>
+	<string name="race_headRank">Rank</string>
+	<string name="race_headCountry">Country</string>
+	<string name="race_headName">Skier</string>
+	<string name="race_headRuns">Runs</string>
+	<string name="race_headTurns">Turns</string>
+	<string name="race_headTime">Time</string>
+	<string name="race_headPoints">Points</string>
+	<string name="race_Finished">Finished</string>
+	<string name="race_Next">Starts next: %1$s (run %2$d)</string>	
+	<string name="race_Winner">Winner: %1$s</string>	
+	<string name="race_notStarted">DNS</string>	
+	<string name="race_notFinished">DNF</string>	
+	
+	<string name="mp_gameExists">Do you wish to continue existing multiplayer game?</string>
+	<string name="mp_continue">Continue</string>
+	<string name="mp_new">Create new</string>
+	<string name="mp_cancel">Cancel</string>
 	
 	<string name="flag_start">START</string>
 	<string name="flag_finish">FINISH</string>
@@ -31,4 +51,13 @@
 	
 	<!--string name="UA_full">Ukraine</string>
 	<string name="AUT_full">Austria</string-->
+	
+	<string name="run_complete1">Run complete (%1$s)</string>	
+	<string name="run_complete3">Turns: %1$d</string>	
+	<string name="run_complete4">Time: %1$f</string>	
+	<string name="run_completeContinue">Continue</string>	
+
+	<string name="run_back">Are you sure you want to give up the run?</string>	
+	<string name="run_backyes">Give up</string>	
+	<string name="run_backno">Continue race</string>	
 </resources>

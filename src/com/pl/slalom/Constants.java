@@ -6,8 +6,7 @@ public class Constants
 {
 	public static final boolean isFullVersion = true;
 	
-	public static final String Extra_LevelNumber = "levelnumber";
-	public static final String Extra_SkiNumber = "skinumber";
+	public static final String Extra_RunData = "rundataId";
 	
 	public static final int MaxRecordedSteps = 1000;
 	public static final int MaxPossibleMove = 2;
@@ -23,4 +22,6 @@ public class Constants
 
 	public static final int MP_ModeTurns = 1;
 	public static final int MP_ModeTime = 2;
+	
+	public static final int AIID_Human = -1;
 }

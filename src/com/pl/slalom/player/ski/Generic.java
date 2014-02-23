@@ -5,6 +5,7 @@ import java.util.*;
 
 public class Generic implements ISki
 {
+	private int id;
 	private String name;
 	private int price;
 	private int[] probs;
@@ -15,8 +16,9 @@ public class Generic implements ISki
 	
 	private Random rnd = new Random();
 
-	public Generic(String name, int price, int[] probs, float uphillDec, float straightDec, float uphillMaxSpeed, float straightMaxSpeed)
+	public Generic(int id, String name, int price, int[] probs, float uphillDec, float straightDec, float uphillMaxSpeed, float straightMaxSpeed)
 	{
+		this.id = id;
 		this.name = name;
 		this.probs = probs;
 		this.uphillDec = uphillDec;
@@ -27,7 +29,13 @@ public class Generic implements ISki
 	}
 
 	@Override
-	public int GetPrice()
+	public int getId()
+	{
+		return id;
+	}
+
+	@Override
+	public int getPrice()
 	{
 		return price;
 	}

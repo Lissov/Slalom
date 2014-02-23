@@ -1,0 +1,48 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal">
+    
+	<TextView
+		android:layout_width="100px"
+		android:layout_height="70px"
+		android:text="@string/race_headRank" />
+	
+	<TextView
+		android:layout_marginLeft="30px"
+		android:layout_width="75px"
+		android:layout_height="70px"
+		android:text="@string/race_headCountry" />
+	
+	<TextView
+		android:layout_marginLeft="30px"
+		android:layout_width="400px"
+		android:layout_height="70px"
+		android:text="@string/race_headName" />
+	
+	<TextView
+		android:id="@+id/race_hRuns"
+		android:layout_marginLeft="30px"
+		android:layout_width="80px"
+		android:layout_height="70px"
+		android:text="@string/race_headRuns" />
+	<TextView
+		android:id="@+id/race_hTurns"
+		android:layout_marginLeft="30px"
+		android:layout_width="100px"
+		android:layout_height="70px"
+		android:text="@string/race_headTurns" />
+	<TextView
+		android:id="@+id/race_hTime"
+		android:layout_marginLeft="30px"
+		android:layout_width="120px"
+		android:layout_height="70px"
+		android:text="@string/race_headTime" />
+	<TextView
+		android:id="@+id/race_hPoints"
+		android:layout_marginLeft="30px"
+		android:layout_width="80px"
+		android:layout_height="70px"
+		android:text="@string/race_headPoints" />
+	
+</LinearLayout>

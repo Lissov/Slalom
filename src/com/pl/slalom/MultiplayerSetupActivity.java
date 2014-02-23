@@ -1,15 +1,17 @@
 package com.pl.slalom;
 import android.app.*;
 import android.os.*;
+import android.view.*;
 import android.widget.*;
 import android.widget.AdapterView.*;
-import android.view.*;
 import com.pl.slalom.Controls.*;
-import java.util.*;
-import com.pl.slalom.track.*;
 import com.pl.slalom.data.*;
-import com.pl.slalom.player.ski.*;
+import com.pl.slalom.data.race.*;
 import com.pl.slalom.data.statics.*;
+import com.pl.slalom.player.ski.*;
+import com.pl.slalom.track.*;
+import java.util.*;
+import android.content.*;
 
 public class MultiplayerSetupActivity extends Activity implements OnItemSelectedListener
 {
@@ -23,8 +25,9 @@ public class MultiplayerSetupActivity extends Activity implements OnItemSelected
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
+		try{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.multiplayer);
+		setContentView(R.layout.multiplayer_setup);
 		
 		avSkis = DataManager.getInstance().getAvailableSkis();
 		avCountries = StaticManager.getCountries();
@@ -37,12 +40,48 @@ public class MultiplayerSetupActivity extends Activity implements OnItemSelected
 		setPlayerCount(2);
 		setTracks();
 		setModes();
+		} catch(Exception ex){
+			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+		}
 	}
 	
-	private List<Slope> availableSlopes;	
+	public void btnStartClick(View view){
+		Competition c = new Competition();
+		c.currentRace = 0;
+		
+		c.competitors = new LinkedList<Competitor>();
+		for (int i = 0; i < plCount; i++){
+			Competitor cmpt = playerViews[i].getCompetitor();
+			c.competitors.add(cmpt);
+		}
+		
+		c.races = new LinkedList<Race>();
+		int runCount = 2;
+		Race r = new Race(
+			availableSlopes.get(sTrack.getSelectedItemPosition()).id,
+			0,
+			runCount,
+			new RaceRun[plCount][2]);
+		for (int i = 0; i < plCount; i++){
+			for (int j = 0; j < runCount; j++)
+			{
+				r.playerRuns[i][j] = new RaceRun(RunStatus.NotStarted);
+			}
+		}
+		c.races.add(r);
+		
+		DataManager.getInstance().dropAllCompetitions();
+		DataManager.getInstance().storeCompetition(c, true);
+		
+		Intent irace = new Intent(this, RaceActivity.class);
+		startActivity(irace);
+	}
+	
+	private List<Slope> availableSlopes;
+	private Spinner sTrack;
 	private void setTracks(){
 		try{
-			Spinner sTrack = (Spinner)findViewById(R.id.mp_spinTrack);
+			sTrack = (Spinner)findViewById(R.id.mp_spinTrack);
 			availableSlopes = DataManager.getInstance().getAvailableSlopes();
 			
 			String[] trackNames = new String[availableSlopes.size()];
@@ -97,7 +136,7 @@ public class MultiplayerSetupActivity extends Activity implements OnItemSelected
 		}
 		for (int i = plCount; i<count; i++){
 			if (playerViews[i] == null){
-				playerViews[i] = new MpPlayerCreate(this, avSkis, avCountries);
+				playerViews[i] = new MpPlayerCreate(this, avSkis, avCountries, "Player " + i);
 			}
 			llPlayers.addView(playerViews[i]);
 		}

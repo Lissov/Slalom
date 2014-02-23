@@ -44,6 +44,14 @@
 			android:layout_height="60px"
 			android:id="@+id/mp_spinTrack"
 			android:textSize="@dimen/text_size"/>
+		
+		<Button
+			android:layout_width="200px"
+			android:layout_height="60px"
+			android:layout_marginLeft="100px"
+			android:textSize="@dimen/text_size"
+			android:text="@string/mp_start"
+			android:onClick="btnStartClick"/>
 	</LinearLayout>
 	<!--shape android:shape="rectangle">
 		<corners
