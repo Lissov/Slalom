@@ -31,6 +31,11 @@ public class DataManager
 		data = dataLoader.loadData();
 		this.context = context;
 	}
+	
+	public Data getData(){
+		return data;	
+	}
+	
 		
 	public List<ISki> getAvailableSkis(){
 		List<ISki> result = new LinkedList<ISki>();

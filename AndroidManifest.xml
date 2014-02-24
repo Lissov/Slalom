@@ -42,7 +42,19 @@
 		</activity>
 		<activity
 			android:label="@string/app_name"
+			android:name=".training.TrainingActivity">
+		</activity>
+		<activity
+			android:label="@string/app_name"
 			android:name=".DatabaseActivity">
+		</activity>
+		<activity
+			android:label="@string/app_name"
+			android:name=".DatabaseActivity">
+		</activity>
+		<activity
+			android:label="@string/app_name"
+			android:name=".career.SetupCareerActivity">
 		</activity>
     </application>
 

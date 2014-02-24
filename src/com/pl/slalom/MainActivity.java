@@ -10,6 +10,8 @@ import java.util.*;
 import com.pl.slalom.player.ski.*;
 import com.pl.slalom.data.race.*;
 import android.view.View.*;
+import com.pl.slalom.training.*;
+import com.pl.slalom.career.*;
 
 public class MainActivity extends Activity
 {
@@ -27,15 +29,17 @@ public class MainActivity extends Activity
 		}
     }
 	
-	public void tutorialClick(View view){
-/*		Intent igame = new Intent(this, GameActivity.class);
-		igame.putExtra(Constants.Extra_LevelNumber, levelnum);
-		igame.putExtra(Constants.Extra_SkiNumber, 10);
-		startActivity(igame);*/
+	public void trainingClick(View view){
+		startActivity(new Intent(this, TrainingActivity.class));
 	}
 	
 	public void careerClick(View view){
-		startActivity(new Intent(this, DatabaseActivity.class));
+		if (DataManager.getInstance().getData().name.isEmpty()){
+			startActivity(new Intent(this, SetupCareerActivity.class));
+		} else {
+			
+		}
+		//startActivity(new Intent(this, DatabaseActivity.class));
 	}
 	
 	public void multiplayerClick(View view){
