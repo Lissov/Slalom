@@ -1,7 +1,6 @@
 package com.pl.slalom.graphics;
 import android.view.*;
 import android.graphics.*;
-import android.content.*;
 import android.widget.*;
 import com.pl.slalom.track.*;
 import com.pl.slalom.*;

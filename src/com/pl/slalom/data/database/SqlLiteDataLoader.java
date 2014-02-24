@@ -232,12 +232,12 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 
 			for (int ic = 0; ic < competition.competitors.size(); ic++){
 				for (int rc = 0; rc < r.runCount; rc++){
-					RaceRun run = r.playerRuns[ic][rc];
 					v = new ContentValues();
 					v.put("competitorId", competition.competitors.get(ic).id);
 					v.put("raceId", r.id);
 					v.put("runNumber", rc);
 					db.insert("run", null, v);
+					// other parameters of 'run' are stored by 'updateCompetition' and should be called separately
 				}
 			}
 		}

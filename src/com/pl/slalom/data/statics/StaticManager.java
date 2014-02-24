@@ -1,6 +1,5 @@
 package com.pl.slalom.data.statics;
 import java.util.*;
-import android.content.*;
 
 public class StaticManager
 {

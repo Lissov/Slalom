@@ -1,5 +1,4 @@
 package com.pl.slalom.data;
-import android.content.*;
 import com.pl.slalom.data.race.*;
 
 public interface IDataLoader

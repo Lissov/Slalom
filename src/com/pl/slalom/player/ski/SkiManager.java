@@ -1,5 +1,4 @@
 package com.pl.slalom.player.ski;
-import java.util.*;
 
 public class SkiManager
 {

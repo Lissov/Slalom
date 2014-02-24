@@ -1,5 +1,4 @@
 package com.pl.slalom.graphics;
-import android.content.*;
 import android.graphics.*;
 import com.pl.slalom.*;
 

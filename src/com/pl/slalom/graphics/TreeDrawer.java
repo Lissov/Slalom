@@ -1,7 +1,6 @@
 package com.pl.slalom.graphics;
 import android.graphics.*;
 import com.pl.slalom.*;
-import android.content.*;
 
 public class TreeDrawer extends Drawer
 {
@@ -19,7 +18,6 @@ public class TreeDrawer extends Drawer
 		paintLeaves.setStyle(Paint.Style.FILL_AND_STROKE);
 	}
 
-	@Override
 	public void draw(Canvas canvas, float x, float y)
 	{
 		float ox = 0.15f;

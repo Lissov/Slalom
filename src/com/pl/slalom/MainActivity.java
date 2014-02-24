@@ -6,10 +6,7 @@ import android.view.*;
 import android.widget.*;
 import android.content.*;
 import com.pl.slalom.data.*;
-import java.util.*;
-import com.pl.slalom.player.ski.*;
 import com.pl.slalom.data.race.*;
-import android.view.View.*;
 import com.pl.slalom.training.*;
 import com.pl.slalom.career.*;
 

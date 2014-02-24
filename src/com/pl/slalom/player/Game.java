@@ -3,8 +3,6 @@ package com.pl.slalom.player;
 import com.pl.slalom.*;
 import com.pl.slalom.track.*;
 import android.graphics.*;
-import android.widget.*;
-import android.content.*;
 import com.pl.slalom.player.ski.*;
 import com.pl.slalom.Utility.*;
 
@@ -81,7 +79,6 @@ public class Game
 		int prX = route.positionsX[route.currentPosition];
 		int prY = route.positionsY[route.currentPosition];
 		
-		Point last = route.getLastMove();
 		route.makeMove(dx, dy);
 		
 		int x = route.positionsX[route.currentPosition];

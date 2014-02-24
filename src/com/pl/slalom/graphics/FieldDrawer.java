@@ -1,7 +1,6 @@
 package com.pl.slalom.graphics;
 import android.graphics.*;
 import com.pl.slalom.*;
-import android.widget.*;
 
 public class FieldDrawer extends Drawer
 {

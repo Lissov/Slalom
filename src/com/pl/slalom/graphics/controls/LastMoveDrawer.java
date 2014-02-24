@@ -2,7 +2,6 @@ package com.pl.slalom.graphics.controls;
 import android.graphics.*;
 import android.content.*;
 import com.pl.slalom.*;
-import com.pl.slalom.graphics.*;
 
 public class LastMoveDrawer
 {

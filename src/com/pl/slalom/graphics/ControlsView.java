@@ -2,10 +2,8 @@ package com.pl.slalom.graphics;
 import android.view.*;
 import android.graphics.*;
 import com.pl.slalom.player.*;
-import android.content.*;
 import com.pl.slalom.*;
 import com.pl.slalom.graphics.controls.*;
-import android.widget.*;
 import java.util.*;
 import android.app.*;
 

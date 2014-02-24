@@ -1,6 +1,5 @@
 package com.pl.slalom.graphics.controls;
 import com.pl.slalom.*;
-import com.pl.slalom.graphics.*;
 import android.graphics.*;
 import android.content.*;
 

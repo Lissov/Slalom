@@ -1,5 +1,4 @@
 package com.pl.slalom.player.ski;
-import com.pl.slalom.player.*;
 import com.pl.slalom.*;
 import java.util.*;
 

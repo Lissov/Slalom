@@ -4,8 +4,6 @@ import android.os.*;
 import android.widget.*;
 import com.pl.slalom.graphics.*;
 import com.pl.slalom.player.*;
-import android.view.*;
-import android.graphics.*;
 import com.pl.slalom.data.*;
 import com.pl.slalom.data.race.*;
 import android.content.*;
@@ -58,8 +56,7 @@ public class GameActivity extends Activity implements ICommandHandler, IMoveCall
 	{
 		checkGameFinished();
 	}
-	
-	@Override
+
 	public void checkGameFinished(){
 		if (!(game.finished || game.failed)){
 			return;

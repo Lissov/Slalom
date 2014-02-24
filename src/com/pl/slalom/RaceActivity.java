@@ -74,7 +74,6 @@ public class RaceActivity extends Activity
 			int plN = getNextPlayer();
 			final int compN = results[plN].compN;
 			final int runNum = getCurrentRun();
-			final Activity a = this;
 		
 			RunData rd = new RunData();
 	 		rd.slopeId = race.trackId;
@@ -245,7 +244,7 @@ public class RaceActivity extends Activity
 		return new Comparator<PlayerResult>(){
 			public int compare(PlayerResult pr1, PlayerResult pr2){
 				if (pr1.bestRes == null && pr2.bestRes == null)
-					return Integer.compare(pr1.compN, pr2.compN);
+					return Integer.valueOf(pr1.compN).compareTo(pr2.compN);
 				if (pr1.bestRes == null) return +1;
 				if (pr2.bestRes == null) return -1;
 				return RunResultComparator.getComparator().compare(
