@@ -7,52 +7,65 @@
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
 		android:orientation="horizontal"
-		android:layout_marginTop="20dp"
 		android:gravity="bottom">
 		<TextView 
-			android:layout_width="wrap_content"
-			android:layout_height="60dp"
-			android:layout_marginLeft="20dp"
+			android:layout_width="110dp"
+			android:layout_height="@dimen/mp_setup_rowheight"
 			android:text="@string/mp_playersCount"
 			android:textSize="@dimen/text_size" />
 		<Spinner
-			android:layout_width="100dp"
-			android:layout_height="60dp"
+			android:layout_width="fill_parent"
+			android:layout_height="@dimen/mp_setup_rowheight"
 			android:id="@+id/mp_spinPlCount"
 			android:textSize="@dimen/text_size" />
-		
-		<TextView 
-			android:layout_width="wrap_content"
-			android:layout_height="60dp"
-			android:layout_marginLeft="30dp"
+	</LinearLayout>
+	<LinearLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="bottom">
+				<TextView 
+			android:layout_width="110dp"
+			android:layout_height="@dimen/mp_setup_rowheight"
 			android:text="@string/mp_mode"
 			android:textSize="@dimen/text_size" />
 		<Spinner
-			android:layout_width="300dp"
-			android:layout_height="60dp"
+			android:layout_width="fill_parent"
+			android:layout_height="@dimen/mp_setup_rowheight"
 			android:id="@+id/mp_spinMode"
 			android:textSize="@dimen/text_size"/>
 
+	</LinearLayout>
+	<LinearLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="bottom">
 		<TextView 
-			android:layout_width="wrap_content"
-			android:layout_height="60dp"
-			android:layout_marginLeft="30dp"
+			android:layout_width="110dp"
+			android:layout_height="@dimen/mp_setup_rowheight"
 			android:text="@string/mp_track"
 			android:textSize="@dimen/text_size"/>
 		<Spinner
-			android:layout_width="300dp"
-			android:layout_height="60dp"
+			android:layout_width="fill_parent"
+			android:layout_height="@dimen/mp_setup_rowheight"
 			android:id="@+id/mp_spinTrack"
 			android:textSize="@dimen/text_size"/>
+			</LinearLayout>
+	<LinearLayout 
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:gravity="bottom">
 		
 		<Button
-			android:layout_width="200dp"
-			android:layout_height="60dp"
-			android:layout_marginLeft="100dp"
+			android:layout_width="fill_parent"
+			android:layout_height="@dimen/mp_setup_rowheight"
 			android:textSize="@dimen/text_size"
 			android:text="@string/mp_start"
 			android:onClick="btnStartClick"/>
 	</LinearLayout>
+	
 	<!--shape android:shape="rectangle">
 		<corners
 			android:radius="3dp"

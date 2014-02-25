@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/mp_setup_rowheight"
+    android:orientation="horizontal">
+    
+	<Spinner
+		android:id="@+id/mpPlayerCountry"
+		android:layout_width="70dp"
+		android:layout_height="fill_parent"
+		android:textSize="@dimen/text_size"/>
+
+	<Spinner
+		android:id="@+id/mpPlayerSki"
+		android:layout_width="100dp"
+		android:layout_height="fill_parent"
+		android:textSize="@dimen/text_size"/>
+	
+	<EditText
+		android:id="@+id/mpPlayerName"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:textSize="@dimen/text_size"
+		android:hint="@string/mp_playerName"/>
+		
+</LinearLayout>

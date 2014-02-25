@@ -178,14 +178,17 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		db.update("player", values, "id = ?", 
 			new String[] {String.valueOf(data.id)});
 		
+		storeAvailableSkis(db, data);
+		storeAvailableSlopes(db, data);
+		
 		db.close();
 	}
 	
-	private void storeAvailableSkis(SQLiteDatabase db){
+	private void storeAvailableSkis(SQLiteDatabase db, Data data){
 		
 	}
 	
-	private void storeAvailableSlopes(SQLiteDatabase db){
+	private void storeAvailableSlopes(SQLiteDatabase db, Data data){
 
 	}
 	
