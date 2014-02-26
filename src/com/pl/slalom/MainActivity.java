@@ -29,9 +29,9 @@ public class MainActivity extends Activity
 	public void trainingClick(View view){
 		startActivity(new Intent(this, TrainingActivity.class));
 	}
-	n
+	
 	public void careerClick(View view){
-		if (DataManager.getInstance().getData().name.isEmpty()){
+		if (DataManager.getInstance().getData().name == null){
 			Intent intent = new Intent(this, SetupCareerActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 			startActivity(intent);

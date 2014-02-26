@@ -1,11 +1,7 @@
 package com.pl.slalom.Controls.Adapters;
 import android.widget.*;
-import com.pl.slalom.*;
 import com.pl.slalom.data.statics.*;
 import java.util.*;
-import android.view.*;
-import android.app.*;
-import android.graphics.*;
 import android.content.*;
 
 public class CountryAdapter{

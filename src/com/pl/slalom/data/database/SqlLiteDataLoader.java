@@ -9,7 +9,7 @@ import com.pl.slalom.data.race.*;
 
 public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 {
-	private static final int DB_VERSION = 5;
+	private static final int DB_VERSION = 6;
 	private Context context;
 	public SqlLiteDataLoader(Context context)
 	{
@@ -33,7 +33,8 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			case 2: firstS = 10; break;
 			case 3: firstS = 11; break;
 			case 4: firstS = 13; break;
-			case 5: firstS = 15; break;
+			case 5: firstS = 14; break;
+			case 6: firstS = 15; break;
 		}
 		
 		int lastS = 0;
@@ -43,6 +44,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			case 3: lastS = 10; break;
 			case 4: lastS = 12; break;
 			case 5: lastS = 13; break;
+			case 6: lastS = 14; break;
 		}	
 		Toast.makeText(context, "Upgrading database", Toast.LENGTH_SHORT).show();
 		runScripts(db, firstS, lastS);
