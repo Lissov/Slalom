@@ -1,4 +1,4 @@
-/*package com.pl.slalom.Controls.Adapters;
+package com.pl.slalom.Controls.Adapters;
 import android.widget.*;
 import com.pl.slalom.*;
 import com.pl.slalom.data.statics.*;
@@ -6,8 +6,23 @@ import java.util.*;
 import android.view.*;
 import android.app.*;
 import android.graphics.*;
+import android.content.*;
 
-public class CountryAdapter extends BaseAdapter implements SpinnerAdapter
+public class CountryAdapter{
+	
+	public static ArrayAdapter<String> getAdapter(Context context, List<Country> countries){
+	
+		String[] c = new String[countries.size()];
+		for (int i = 0; i<countries.size(); i++)
+			c[i] = countries.get(i).name;
+		ArrayAdapter<String> a = new ArrayAdapter<String>(
+			context, android.R.layout.simple_spinner_item,	c);
+		a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		
+		return a;
+	}
+}
+/*public class CountryAdapter extends BaseAdapter implements SpinnerAdapter
 {
 	private Activity context;
 	private List<Country> countries;

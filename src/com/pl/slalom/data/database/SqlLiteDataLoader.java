@@ -9,7 +9,7 @@ import com.pl.slalom.data.race.*;
 
 public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 {
-	private static final int DB_VERSION = 4;
+	private static final int DB_VERSION = 5;
 	private Context context;
 	public SqlLiteDataLoader(Context context)
 	{
@@ -33,6 +33,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			case 2: firstS = 10; break;
 			case 3: firstS = 11; break;
 			case 4: firstS = 13; break;
+			case 5: firstS = 15; break;
 		}
 		
 		int lastS = 0;
@@ -41,6 +42,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			case 2: lastS = 9; break;
 			case 3: lastS = 10; break;
 			case 4: lastS = 12; break;
+			case 5: lastS = 13; break;
 		}	
 		Toast.makeText(context, "Upgrading database", Toast.LENGTH_SHORT).show();
 		runScripts(db, firstS, lastS);
@@ -115,7 +117,12 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		"DELETE FROM track_availability where trackId = 3",
 		//12
 		"INSERT INTO track_availability(trackId, playerId)" +
-		" select 10, p.id from player p"
+		" select 10, p.id from player p",
+		//v5
+		//13
+		"ALTER TABLE player ADD COLUMN lastName TEXT",
+		//14
+		"ALTER TABLE player ADD COLUMN countryId INTEGER"
 	};
 
 	@Override
@@ -124,13 +131,15 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		Toast.makeText(context, "Loading data", Toast.LENGTH_SHORT).show();
 		
 		SQLiteDatabase db = this.getReadableDatabase();
-		Cursor cursor = db.rawQuery("Select id, name, money, experience from player", null);
+		Cursor cursor = db.rawQuery("Select id, name, lastName, countryId, money, experience from player", null);
 		if (cursor.moveToFirst()){
 			Data data = new Data();
 			data.id = cursor.getInt(0);
 			data.name = cursor.getString(1);
-			data.money = cursor.getInt(2);
-			data.experience = cursor.getInt(3);
+			data.lastname = cursor.getString(2);
+			data.countryId = cursor.getInt(3);
+			data.money = cursor.getInt(4);
+			data.experience = cursor.getInt(5);
 			cursor.close();
 			data.availableSkiIds = getAvailableSkis(db, data.id);
 			data.availableTrackIds = getAvailableSlopes(db, data.id);
@@ -173,6 +182,8 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		
 		ContentValues values = new ContentValues();
 		values.put("name", data.name);
+		values.put("lastname", data.lastname);
+		values.put("countryId", data.countryId);
 		values.put("money", data.money);
 		values.put("experience", data.experience);
 		db.update("player", values, "id = ?", 

@@ -7,6 +7,7 @@ import com.pl.slalom.data.race.*;
 import com.pl.slalom.data.statics.*;
 import com.pl.slalom.player.ski.*;
 import java.util.*;
+import com.pl.slalom.Controls.Adapters.*;
 
 public class MpPlayerCreate extends LinearLayout
 {
@@ -43,13 +44,7 @@ public class MpPlayerCreate extends LinearLayout
 		spSkis.setAdapter(adapter);
 		
 		spCountry = (Spinner)findViewById(R.id.mpPlayerCountry);
-		String[] c = new String[countries.size()];
-		for (int i = 0; i<countries.size(); i++)
-			c[i] = countries.get(i).name;
-		ArrayAdapter<String> a = new ArrayAdapter<String>(
-			context, android.R.layout.simple_spinner_item,	c);
-		a.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		spCountry.setAdapter(a);
+		spCountry.setAdapter(CountryAdapter.getAdapter(context, countries));
 	}
 	
 	public Competitor getCompetitor(){

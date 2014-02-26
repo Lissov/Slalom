@@ -29,12 +29,14 @@ public class MainActivity extends Activity
 	public void trainingClick(View view){
 		startActivity(new Intent(this, TrainingActivity.class));
 	}
-	
+	n
 	public void careerClick(View view){
 		if (DataManager.getInstance().getData().name.isEmpty()){
-			startActivity(new Intent(this, SetupCareerActivity.class));
+			Intent intent = new Intent(this, SetupCareerActivity.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+			startActivity(intent);
 		} else {
-			
+			startActivity(new Intent(this, CareerActivity.class));
 		}
 		//startActivity(new Intent(this, DatabaseActivity.class));
 	}
@@ -46,7 +48,7 @@ public class MainActivity extends Activity
 		if (comp != null){
 			AlertDialog alert = new AlertDialog.Builder(this).create();
 			alert.setMessage(getResources().getString(R.string.mp_gameExists));
-			alert.setCancelable(true);
+		 	alert.setCancelable(true);
 			alert.setButton(AlertDialog.BUTTON_POSITIVE,
 				getResources().getString(R.string.mp_continue),
 				new DialogInterface.OnClickListener(){ public void onClick(DialogInterface dialog, int which){ continueMP(); }});

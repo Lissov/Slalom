@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+	android:gravity="center">
+    
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<TextView 
+			android:layout_height="40dp"
+			android:layout_width="120dp"
+			android:text="@string/careersetup_name"/>
+		<EditText
+			android:layout_height="40dp"
+			android:layout_width="200dp"
+			android:hint="@string/careersetup_name"
+			android:id="@+id/careersetup_name"/>
+	</LinearLayout>
+	
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<TextView 
+			android:layout_height="40dp"
+			android:layout_width="120dp"
+			android:text="@string/careersetup_lastName"/>
+		<EditText
+			android:layout_height="40dp"
+			android:layout_width="200dp"
+			android:hint="@string/careersetup_lastName"
+			android:id="@+id/careersetup_lastName"/>
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<TextView 
+			android:layout_height="40dp"
+			android:layout_width="120dp"
+			android:text="@string/careersetup_country"/>
+		<EditText
+			android:layout_height="40dp"
+			android:layout_width="200dp"
+			android:id="@+id/careersetup_spCountry"/>
+	</LinearLayout>
+	
+	<Button
+		android:layout_width="320dp"
+		android:layout_height="40dp"
+		android:layout_marginTop="20dp"
+		android:text="@string/careersetup_start"
+		android:onClick="onStart" />
+</LinearLayout>

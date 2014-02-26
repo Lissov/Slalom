@@ -36,6 +36,10 @@ public class DataManager
 		return data;	
 	}
 	
+	public void storeData(){
+		dataLoader.storeData(data);
+	}
+	
 		
 	public List<ISki> getAvailableSkis(){
 		List<ISki> result = new LinkedList<ISki>();
