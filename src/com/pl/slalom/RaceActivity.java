@@ -78,6 +78,7 @@ public class RaceActivity extends Activity
 			RunData rd = new RunData();
 	 		rd.slopeId = race.trackId;
 			rd.skiId = comp.competitors.get(compN).skiId;
+			rd.playerId = DataManager.getInstance().getData().id;
 			rd.resUpdater = new ResultUpdater(){
 				@Override
 				public void updateResult(RunResult result){

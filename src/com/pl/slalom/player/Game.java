@@ -5,6 +5,7 @@ import com.pl.slalom.track.*;
 import android.graphics.*;
 import com.pl.slalom.player.ski.*;
 import com.pl.slalom.Utility.*;
+import com.pl.slalom.data.*;
 
 public class Game
 {
@@ -18,9 +19,11 @@ public class Game
 	private long startTime;
 	private long finishTime;
 	private ISki ski;
+	private PlayerSkills playerSkills;
 	
-	public Game(int slopeN, int skiN, IMoveCallback callback){
+	public Game(int slopeN, int skiN, int playerId, IMoveCallback callback) throws Exception {
 		this.callback = callback;
+		this.playerSkills = DataManager.getInstance().getPlayerSkills(playerId);
 		slope = new SlopeManager().getSlope(slopeN);
 		route = new Route(slope.startPos, 0);
 		ski = new SkiManager().getSki(skiN);
@@ -40,7 +43,8 @@ public class Game
 	
 	public boolean[][] getPossibleMoves(){
 		Point last = route.getLastMove();
-		return ski.getPossibleMoves(last.x, last.y,
+		return ski.getPossibleMoves(playerSkills,
+									last.x, last.y,
 									!finished && !failed && !makingMove, 
 									route.currentPosition == 0,
 									tramplinFly > 0);

@@ -7,6 +7,7 @@ import java.util.*;
 import com.pl.slalom.track.*;
 import android.widget.*;
 import com.pl.slalom.data.race.*;
+import com.pl.slalom.player.*;
 
 public class DataManager
 {
@@ -107,6 +108,18 @@ public class DataManager
 	}
 	public RunData getRunData(int key){
 		return runData.get(key);
+	}
+	
+	public PlayerSkills getPlayerSkills(long playerId) throws Exception {
+		if (playerId != data.id)
+			throw new Exception("Can't get player id for player that is not a current player");
+			
+		PlayerSkills s =  new PlayerSkills();
+		s.strAcc = 1;
+		s.strSkiMaxV_k = 0.1f;
+		s.startSpeed = 1;
+		s.speedHandling = 0;
+		return s;
 	}
 }
 

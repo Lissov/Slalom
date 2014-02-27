@@ -28,7 +28,7 @@ public class GameActivity extends Activity implements ICommandHandler, IMoveCall
 			int rundataId = getIntent().getIntExtra(Constants.Extra_RunData, -1);
 			runData = DataManager.getInstance().getRunData(rundataId);
 			
-			game = new Game(runData.slopeId, runData.skiId, this);
+			game = new Game(runData.slopeId, runData.skiId, runData.playerId, this);
 		
 			LinearLayout llSlope = (LinearLayout)findViewById(R.id.llSlope);
 			slopeView = new SlopeView(this, game, Constants.controlsOnSlope, this);

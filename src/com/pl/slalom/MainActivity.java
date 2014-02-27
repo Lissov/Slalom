@@ -31,11 +31,13 @@ public class MainActivity extends Activity
 	}
 	
 	public void careerClick(View view){
-		if (DataManager.getInstance().getData().name == null){
+		String name = DataManager.getInstance().getData().name;
+		if (null == name){
 			Intent intent = new Intent(this, SetupCareerActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 			startActivity(intent);
 		} else {
+			Toast.makeText(this, "Name: " + name, Toast.LENGTH_LONG).show();						
 			startActivity(new Intent(this, CareerActivity.class));
 		}
 		//startActivity(new Intent(this, DatabaseActivity.class));

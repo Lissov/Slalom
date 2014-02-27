@@ -1,5 +1,6 @@
 package com.pl.slalom.player.ski;
 import com.pl.slalom.*;
+import com.pl.slalom.player.*;
 import java.util.*;
 
 public class Generic implements ISki
@@ -46,7 +47,7 @@ public class Generic implements ISki
 	}
 
 	@Override
-	public boolean[][] getPossibleMoves(int x, int y, boolean canMove, boolean isStart, boolean flying)
+	public boolean[][] getPossibleMoves(PlayerSkills skills, int x, int y, boolean canMove, boolean isStart, boolean flying)
 	{
 		int mm = Constants.MaxPossibleMove;
 		int mcnt = 2*mm + 1;
