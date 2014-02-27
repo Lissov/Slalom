@@ -20,6 +20,7 @@ public class Game
 	private long finishTime;
 	private ISki ski;
 	private PlayerSkills playerSkills;
+	private MoveCalculator moveCalculator;
 	
 	public Game(int slopeN, int skiN, int playerId, IMoveCallback callback) throws Exception {
 		this.callback = callback;
@@ -27,6 +28,7 @@ public class Game
 		slope = new SlopeManager().getSlope(slopeN);
 		route = new Route(slope.startPos, 0);
 		ski = new SkiManager().getSki(skiN);
+		moveCalculator = new MoveCalculator(playerSkills, ski.getSkiParameters());
 		
 		finished = false;
 		failed = false;
@@ -43,7 +45,7 @@ public class Game
 	
 	public boolean[][] getPossibleMoves(){
 		Point last = route.getLastMove();
-		return ski.getPossibleMoves(playerSkills,
+		return moveCalculator.getPossibleMoves(
 									last.x, last.y,
 									!finished && !failed && !makingMove, 
 									route.currentPosition == 0,

@@ -23,7 +23,7 @@
 	<string name="race_headTurns">Turns</string>
 	<string name="race_headTime">Time</string>
 	<string name="race_headPoints">Points</string>
-	<string name="race_Finished">Finished</string>
+	<!--string name="race_Finished">Finished</string-->
 	<string name="race_Next">Starts next: %1$s (run %2$d)</string>	
 	<string name="race_Winner">Winner: %1$s</string>	
 	<string name="race_notStarted">DNS</string>	

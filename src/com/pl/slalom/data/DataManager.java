@@ -115,10 +115,12 @@ public class DataManager
 			throw new Exception("Can't get player id for player that is not a current player");
 			
 		PlayerSkills s =  new PlayerSkills();
-		s.strAcc = 1;
-		s.strSkiMaxV_k = 0.1f;
-		s.startSpeed = 1;
+		s.strAcc_k = 0.5f;
+		s.strSkiMaxV_k = 0.1f;	// means it can only make 1 step
+		s.uphillSkiMaxV_k= 0.5f; 
+		s.startSpeedK = 0.5f;
 		s.speedHandling = 0;
+		s.skiControl = 1;
 		return s;
 	}
 }

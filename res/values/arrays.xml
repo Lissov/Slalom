@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 	
 <resources>
-	<string-array name="levels">
+	<!--string-array name="levels">
 		<item name="level1">Slope 1</item>
 		<item name="level2">Slope 2 (tramplin)</item>
 		<item name="level3">Slope 3 (long)</item>
-	</string-array>
+	</string-array-->
 </resources>
 

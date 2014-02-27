@@ -32,7 +32,7 @@ public class MainActivity extends Activity
 	
 	public void careerClick(View view){
 		String name = DataManager.getInstance().getData().name;
-		if (null == name){
+		if (null == name || name.trim().isEmpty()){
 			Intent intent = new Intent(this, SetupCareerActivity.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 			startActivity(intent);
