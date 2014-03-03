@@ -2,15 +2,24 @@ package com.pl.slalom.career;
 import com.pl.slalom.*;
 import android.app.*;
 import android.os.*;
+import android.support.v4.app.FragmentActivity;
+
 import com.pl.slalom.data.*;
 import android.content.*;
 import android.widget.*;
+import android.widget.TabHost.OnTabChangeListener;
 
-public class CareerActivity extends Activity
+public class CareerActivity extends FragmentActivity implements OnTabChangeListener
 {
 	Data data;
-	
+
 	@Override
+	public void onTabChanged(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	/*@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -53,5 +62,5 @@ public class CareerActivity extends Activity
 			new DialogInterface.OnClickListener(){ public void onClick(DialogInterface di, int i)
 				{ showGeneral(); } });
 		ad.show();
-	}
+	}*/
 }
