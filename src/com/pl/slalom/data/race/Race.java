@@ -15,4 +15,13 @@ public class Race
 		this.runCount = runCount;
 		this.playerRuns = playerRuns;
 	}
+	
+	public boolean isFinished(){
+		for (int p = 0; p < playerRuns.length; p++){
+			if (playerRuns[p][runCount - 1].runResult.status == RunStatus.NotStarted)
+				return false;
+		}
+		
+		return true;
+	}
 }

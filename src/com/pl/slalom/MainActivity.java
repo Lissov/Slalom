@@ -27,7 +27,8 @@ public class MainActivity extends Activity
     }
 	
 	public void trainingClick(View view){
-		startActivity(new Intent(this, TrainingActivity.class));
+		//startActivity(new Intent(this, TrainingActivity.class));
+		startActivity(new Intent(this, DatabaseActivity.class));
 	}
 	
 	public void careerClick(View view){
@@ -37,33 +38,41 @@ public class MainActivity extends Activity
 			intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 			startActivity(intent);
 		} else {
-			Toast.makeText(this, "Name: " + name, Toast.LENGTH_LONG).show();						
 			startActivity(new Intent(this, CareerActivity.class));
 		}
-		//startActivity(new Intent(this, DatabaseActivity.class));
 	}
 	
 	public void multiplayerClick(View view){
 		try{
-		Competition comp = DataManager.getInstance().getCompetition();
+			Competition comp = DataManager.getInstance().getCompetition();
 		
-		if (comp != null){
-			AlertDialog alert = new AlertDialog.Builder(this).create();
-			alert.setMessage(getResources().getString(R.string.mp_gameExists));
-		 	alert.setCancelable(true);
-			alert.setButton(AlertDialog.BUTTON_POSITIVE,
-				getResources().getString(R.string.mp_continue),
-				new DialogInterface.OnClickListener(){ public void onClick(DialogInterface dialog, int which){ continueMP(); }});
-			alert.setButton(AlertDialog.BUTTON_NEGATIVE,
-				getResources().getString(R.string.mp_new),
-				new DialogInterface.OnClickListener(){ public void onClick(DialogInterface dialog, int which){ setupNewMP(); }});
-			alert.setButton(AlertDialog.BUTTON_NEUTRAL,
-				getResources().getString(R.string.mp_cancel),
-				new DialogInterface.OnClickListener(){ public void onClick(DialogInterface dialog, int which){ }});
-			alert.show();
-		} else{
-			setupNewMP();
-		}
+			boolean exists = comp != null && 
+					!(comp.currentRace == comp.races.size()-1 
+						&& comp.races.get(comp.currentRace).isFinished());
+		
+			if (exists)
+			{
+				AlertDialog alert = new AlertDialog.Builder(this).create();
+				alert.setMessage(getResources().getString(R.string.mp_gameExists));
+				alert.setCancelable(true);
+				alert.setButton(AlertDialog.BUTTON_POSITIVE,
+					getResources().getString(R.string.mp_continue),
+					new DialogInterface.OnClickListener(){ public void onClick(DialogInterface dialog, int which)
+						{ continueMP(); }});
+				alert.setButton(AlertDialog.BUTTON_NEGATIVE,
+					getResources().getString(R.string.mp_new),
+					new DialogInterface.OnClickListener(){ public void onClick(DialogInterface dialog, int which)
+						{ setupNewMP(); }});
+				alert.setButton(AlertDialog.BUTTON_NEUTRAL,
+					getResources().getString(R.string.mp_cancel),
+					new DialogInterface.OnClickListener(){ public void onClick(DialogInterface dialog, int which)
+						{ }});
+				alert.show();
+			}
+			else
+			{
+				setupNewMP();
+			}
 		} catch(Exception ex){
 			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
 		}

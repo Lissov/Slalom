@@ -45,6 +45,8 @@ public class MoveCalculator {
 				
 		float cspd = (float)Math.sqrt(x*x + y*y);
 		int s = getMaxS(cspd);
+		if (s > Constants.MaxPossibleMove) 
+			s = Constants.MaxPossibleMove;
 		for (int i = -mm; i <= mm; i++)
 			for (int j = -mm; j <= mm; j++)
 			{
@@ -83,16 +85,15 @@ public class MoveCalculator {
 				
 		int r = rnd.nextInt(100);
 		float p = 0;
-		for (int i = 0; i < ski.probs.length; i++)
+		int i = 1;
+		while (i < ski.probs.length && r > p + ski.probs[i-1]*plM)
 		{
-			if (r < p + ski.probs[i]*plM){
-				float maxS = i * handling;
-				return maxS < 1 ? 1 : Math.round(maxS);
-			}
-			p += ski.probs[i]*plM;
+			p += ski.probs[i-1]*plM;
+			i++;
 		}
 		
-		return 0;
+		float maxS = i * handling;
+		return maxS <= 1 ? 1 : Math.round(maxS);
 	}
 	
 }

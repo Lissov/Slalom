@@ -55,8 +55,7 @@ public class RaceActivity extends Activity
 	
 	private void update(){
 		try{
-			//reload may be redundant
-			comp = DataManager.getInstance().getCompetition();		
+			//comp = DataManager.getInstance().getCompetition();
 			race = comp.races.get(comp.currentRace);
 			
 			results = buildPlayerResults();
@@ -78,7 +77,7 @@ public class RaceActivity extends Activity
 			RunData rd = new RunData();
 	 		rd.slopeId = race.trackId;
 			rd.skiId = comp.competitors.get(compN).skiId;
-			rd.playerId = DataManager.getInstance().getData().id;
+			rd.playerId = Constants.MP_player_id; //DataManager.getInstance().getData().id;
 			rd.resUpdater = new ResultUpdater(){
 				@Override
 				public void updateResult(RunResult result){

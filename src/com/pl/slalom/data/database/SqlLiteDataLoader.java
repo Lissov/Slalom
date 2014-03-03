@@ -64,7 +64,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		"money INTEGER," +
 		"experience INTEGER)",
 		//1
-		"INSERT INTO player(name, money, experience) values ('', 0, 0)",
+		"INSERT INTO player(name, money, experience) values (null, 0, 0)",
 		//2
 		"CREATE TABLE ski_availability (" +
 		"id INTEGER PRIMARY KEY AUTOINCREMENT," +

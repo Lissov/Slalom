@@ -68,4 +68,9 @@
 	
 	<string name="career_startTitle">Hi, %1$s</string>
 	<string name="career_startMessage">You have no money, no experience and beginner skis. In the course of game you will win money to buy a new equipment and experience points to improve your skiing skills. Good luck in becoming the Champion!</string>
+	
+	<string name="career_Money">Money: %1$d</string>
+	<string name="career_Experience">Experience: %1$d</string>
+	
+	<string name="message_ok">Ok</string>
 </resources>

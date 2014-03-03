@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="fill_parent"
+		android:orientation="horizontal">
+		<ImageView
+			android:layout_width="75dp"
+			android:layout_height="50dp"
+			android:id="@+id/career_ivPlrCountry"/>
+		<TextView
+			android:layout_marginLeft="6dp"
+			android:layout_width="wrap_content"
+			android:layout_height="50dp"
+			android:id="@+id/career_tvPlrName"/>
+		<TextView
+			android:layout_marginLeft="80dp"
+			android:layout_width="wrap_content"
+			android:layout_height="50dp"
+			android:id="@+id/career_tvPlrMoney"/>
+		<TextView
+			android:layout_marginLeft="80dp"
+			android:layout_width="wrap_content"
+			android:layout_height="50dp"
+			android:id="@+id/career_tvPlrExperience"/>
+	</LinearLayout>
+</LinearLayout>

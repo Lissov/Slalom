@@ -4,6 +4,7 @@ import android.app.*;
 import android.os.*;
 import com.pl.slalom.data.*;
 import android.content.*;
+import android.widget.*;
 
 public class CareerActivity extends Activity
 {
@@ -13,13 +14,28 @@ public class CareerActivity extends Activity
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
-		setContentView(R.layout.database);
-		
+				setContentView(R.layout.career);
+
 		data = DataManager.getInstance().getData();
+		showGeneral();
+		
 		if (data.experience < 0){
 			startCareer();
 		}
+	}
+	
+	private void showGeneral(){
+		((TextView)findViewById(R.id.career_tvPlrName)).setText(
+			data.name + " " + data.lastname.toUpperCase());
+
+		((TextView)findViewById(R.id.career_tvPlrMoney)).setText(
+			String.format(
+				getResources().getString(R.string.career_Money),
+				data.money));		
+		((TextView)findViewById(R.id.career_tvPlrExperience)).setText(
+			String.format(
+				getResources().getString(R.string.career_Experience),
+				data.experience));
 	}
 	
 	private void startCareer(){
@@ -29,9 +45,13 @@ public class CareerActivity extends Activity
 		
 		AlertDialog.Builder ad = new AlertDialog.Builder(this);
 		ad.setCancelable(true);
-		ad.setTitle(R.string.career_startTitle);
-		ad.setNeutralButton(R.string.career_startMessage,
-			new DialogInterface.OnClickListener(){ public void onClick(DialogInterface di, int i){} });
+		ad.setTitle(String.format(
+						getResources().getString(R.string.career_startTitle), 
+						data.name + " " +data.lastname));
+		ad.setMessage(R.string.career_startMessage);
+		ad.setNeutralButton(R.string.message_ok,
+			new DialogInterface.OnClickListener(){ public void onClick(DialogInterface di, int i)
+				{ showGeneral(); } });
 		ad.show();
 	}
 }

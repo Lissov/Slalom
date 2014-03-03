@@ -36,16 +36,22 @@ public class Game
 		
 		startTime = 0;
 		finishTime = 0;
+		calcPossibleMoves();
 	}
 	
 	private long moveStart;
 	public boolean makingMove;
 	public int makingX;
 	public int makingY;
+	private boolean[][] possibleMoves;
 	
 	public boolean[][] getPossibleMoves(){
+		return possibleMoves;
+	}
+	
+	private void calcPossibleMoves(){
 		Point last = route.getLastMove();
-		return moveCalculator.getPossibleMoves(
+		possibleMoves = moveCalculator.getPossibleMoves(
 									last.x, last.y,
 									!finished && !failed && !makingMove, 
 									route.currentPosition == 0,
@@ -57,6 +63,7 @@ public class Game
 		makingY = dy;
 		moveStart = System.currentTimeMillis();
 		makingMove = true;
+		calcPossibleMoves();
 	}
 	
 	public float getMovePercentage(){
@@ -149,6 +156,8 @@ public class Game
 		} else {
 			tramplinFly--;
 		}
+		
+		calcPossibleMoves();
 		
 		callback.moveComplete();
 	}

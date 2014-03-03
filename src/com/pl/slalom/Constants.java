@@ -24,4 +24,10 @@ public class Constants
 	public static final int MP_ModeTime = 2;
 	
 	public static final int AIID_Human = -1;
+	public static final int MP_player_id = -1;
+
+	public static final int[] experienceLevels = new int[] 
+		{ 50, 200, 500, 1000, 2000, 5000, 10000, 100000 };
+		
+	
 }

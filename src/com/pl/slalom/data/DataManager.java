@@ -72,7 +72,8 @@ public class DataManager
 	
 	public Competition getCompetition(){
 		try{
-			return dataLoader.getCompetition(data.id);
+			Competition c = dataLoader.getCompetition(data.id);
+			return c;
 		} catch(Exception ex){
 			Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
 			return null;
@@ -111,6 +112,17 @@ public class DataManager
 	}
 	
 	public PlayerSkills getPlayerSkills(long playerId) throws Exception {
+		if (playerId == Constants.MP_player_id){
+			PlayerSkills s =  new PlayerSkills();
+			s.strAcc_k = 1f;
+			s.strSkiMaxV_k = 1f;
+			s.uphillSkiMaxV_k= 1f; 
+			s.startSpeedK = 1f;
+			s.speedHandling = 20;
+			s.skiControl = 0;
+			return s;
+		}
+		
 		if (playerId != data.id)
 			throw new Exception("Can't get player id for player that is not a current player");
 			
@@ -120,8 +132,15 @@ public class DataManager
 		s.uphillSkiMaxV_k= 0.5f; 
 		s.startSpeedK = 0.5f;
 		s.speedHandling = 0;
-		s.skiControl = 1;
+		s.skiControl = 0;		// not better than ski defaults
 		return s;
+	}
+	
+	public int getNextExpLevel(int experience){
+		int i = 0;
+		while (Constants.experienceLevels[i] < experience) i++;
+		
+		return i;
 	}
 }
 
