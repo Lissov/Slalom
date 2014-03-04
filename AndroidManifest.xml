@@ -57,7 +57,11 @@
 			<meta-data
 				android:name="android.support.PARENT_ACTIVITY"
 				android:value=".MainActivity" />
-				</activity>
-		</application>
-
+		</activity>
+		
+		<activity android:name=".career.CareerExperienceActivity" />
+        <activity android:name=".career.CareerSkiActivity" />
+        <activity android:name=".career.CareerEventsActivity" />
+        
+	</application>
 </manifest>

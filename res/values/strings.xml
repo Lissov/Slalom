@@ -72,5 +72,9 @@
 	<string name="career_Money">Money: %1$d</string>
 	<string name="career_Experience">Experience: %1$d</string>
 	
+	<string name="career_tabExperience">Experience</string>
+	<string name="career_tabSki">Ski</string>
+	<string name="career_tabEvents">Events</string>
+		
 	<string name="message_ok">Ok</string>
 </resources>

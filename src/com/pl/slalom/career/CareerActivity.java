@@ -6,33 +6,54 @@ import android.support.v4.app.FragmentActivity;
 
 import com.pl.slalom.data.*;
 import android.content.*;
+import android.content.res.Resources;
 import android.widget.*;
 import android.widget.TabHost.OnTabChangeListener;
+import android.widget.TabHost.TabSpec;
 
-public class CareerActivity extends FragmentActivity implements OnTabChangeListener
+public class CareerActivity extends TabActivity implements OnTabChangeListener
 {
 	Data data;
-
-	@Override
-	public void onTabChanged(String arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 	
-	/*@Override
+	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-				setContentView(R.layout.career);
+		setContentView(R.layout.career);
 
 		data = DataManager.getInstance().getData();
 		showGeneral();
+		
+		TabHost tabHost = getTabHost();
+		Resources r = getResources();
+		
+		TabSpec expSpec = tabHost.newTabSpec("Experience");
+		expSpec.setIndicator(r.getString(R.string.career_tabExperience), r.getDrawable(R.drawable.icon_career_exp_tab));
+		expSpec.setContent(new Intent(this, CareerExperienceActivity.class));
+		
+		TabSpec skiSpec = tabHost.newTabSpec("Ski");
+		skiSpec.setIndicator(r.getString(R.string.career_tabSki), r.getDrawable(R.drawable.icon_career_ski_tab));
+		skiSpec.setContent(new Intent(this, CareerSkiActivity.class));
+		
+		TabSpec eventsSpec = tabHost.newTabSpec("Experience");
+		eventsSpec.setIndicator(r.getString(R.string.career_tabEvents), r.getDrawable(R.drawable.icon_career_cmp_tab));
+		eventsSpec.setContent(new Intent(this, CareerEventsActivity.class));
+		
+		tabHost.addTab(expSpec);
+		tabHost.addTab(skiSpec);
+		tabHost.addTab(eventsSpec);
 		
 		if (data.experience < 0){
 			startCareer();
 		}
 	}
 	
+	@Override
+	public void onTabChanged(String arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private void showGeneral(){
 		((TextView)findViewById(R.id.career_tvPlrName)).setText(
 			data.name + " " + data.lastname.toUpperCase());
@@ -62,5 +83,5 @@ public class CareerActivity extends FragmentActivity implements OnTabChangeListe
 			new DialogInterface.OnClickListener(){ public void onClick(DialogInterface di, int i)
 				{ showGeneral(); } });
 		ad.show();
-	}*/
+	}
 }

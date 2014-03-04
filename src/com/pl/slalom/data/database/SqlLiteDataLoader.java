@@ -147,6 +147,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			data.availableTrackIds = getAvailableSlopes(db, data.id);
 			return data;
 		}
+		cursor.close();
 		
 		return null;
 	}
@@ -160,7 +161,8 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 				result.add(cursor.getInt(0));
 			} while (cursor.moveToNext());
 		}
-		
+		cursor.close();
+
 		return result;
 	}
 
@@ -173,6 +175,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 				result.add(cursor.getInt(0));
 			} while (cursor.moveToNext());
 		}
+		cursor.close();
 
 		return result;
 	}

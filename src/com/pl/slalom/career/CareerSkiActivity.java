@@ -5,7 +5,7 @@ import com.pl.slalom.*;
 import android.app.Activity;
 import android.os.Bundle;
 
-public class CareerSki extends Activity {
+public class CareerSkiActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
