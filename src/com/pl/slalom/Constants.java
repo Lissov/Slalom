@@ -29,5 +29,16 @@ public class Constants
 	public static final int[] experienceLevels = new int[] 
 		{ 50, 200, 500, 1000, 2000, 5000, 10000, 100000 };
 		
+	public static class Events{
+		public static class Austria{	
+			public static final int evt_quali_1 = 1;
+			public static final int evt_locchamp_au_1 = 2;
+		}
+	}
 	
+	public static class Slopes{
+		public static class Austria{	
+			public static final int hohewandwiese = 10;
+		}
+	}
 }

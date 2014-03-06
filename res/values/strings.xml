@@ -75,6 +75,11 @@
 	<string name="career_tabExperience">Experience</string>
 	<string name="career_tabSki">Ski</string>
 	<string name="career_tabEvents">Events</string>
-		
+	
+	<string name="career_exp_nextLevel">Experience for next level: %1$s</string>
+	
 	<string name="message_ok">Ok</string>
+	
+	<string name="evt_au_quali1_name">Local club skiing</string>
+	<string name="evt_au_quali1_desc">Skiing day in a local club. Improve results to qualify for real challenges.</string>
 </resources>

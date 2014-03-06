@@ -1,5 +1,7 @@
 package com.pl.slalom.track;
 
+import com.pl.slalom.Constants;
+
 public class SlopeManager
 {
 	public Slope getSlope(int number){
@@ -7,7 +9,8 @@ public class SlopeManager
 			case 1: return getSlope1();
 			case 2: return getSlope2();
 			case 3: return getSlope3();
-			case 10: return getSlope10();
+			case Constants.Slopes.Austria.hohewandwiese: 
+				return getSlope_au_hww();
 			default:
 				return null;
 		}
@@ -72,8 +75,8 @@ public class SlopeManager
 		return slope;
 	}
 
-	private Slope getSlope10(){
-		Slope slope = new Slope(10, "Hohe Wand Wiese");
+	private Slope getSlope_au_hww(){
+		Slope slope = new Slope(Constants.Slopes.Austria.hohewandwiese, "Hohe Wand Wiese");
 		slope.width = 13;
 		slope.gates = new Gate[6];
 		slope.tramplins = new Tramplin[0];
