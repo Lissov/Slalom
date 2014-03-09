@@ -26,6 +26,13 @@ public class CompetitionManager
 				R.string.evt_au_quali1_name, R.string.evt_au_quali1_desc
 				));
 		
+		result.add(getComp(
+				Constants.Events.Austria.evt_locchamp_1, 
+				new int[] {Constants.Slopes.Austria.hohewandwiese},
+				R.string.evt_au_champ1_name, R.string.evt_au_champ1_desc
+				));
+		
+		
 		return result;
 	}
 }

@@ -21,7 +21,8 @@ public class CareerExperienceActivity extends Activity {
 		((TextView)findViewById(R.id.career_exp_toNextLevel)).setText(
 				String.format(
 						getResources().getString(R.string.career_exp_nextLevel),
-						d.getNextExpLevel(d.getData().experience)
+						d.getNextExpLevel(d.getData().experience),
+						d.getNextExpRequired(d.getData().experience)
 				)
 			);
 	}

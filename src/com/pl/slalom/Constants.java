@@ -32,7 +32,7 @@ public class Constants
 	public static class Events{
 		public static class Austria{	
 			public static final int evt_quali_1 = 1;
-			public static final int evt_locchamp_au_1 = 2;
+			public static final int evt_locchamp_1 = 2;
 		}
 	}
 	

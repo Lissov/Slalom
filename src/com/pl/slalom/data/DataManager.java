@@ -4,6 +4,7 @@ import com.pl.slalom.player.ski.*;
 import android.content.*;
 import com.pl.slalom.data.database.*;
 import java.util.*;
+
 import com.pl.slalom.track.*;
 import android.widget.*;
 import com.pl.slalom.data.race.*;
@@ -140,7 +141,25 @@ public class DataManager
 		int i = 0;
 		while (Constants.experienceLevels[i] < experience) i++;
 		
-		return i;
+		return i + 1;
+	}
+	
+	public int getNextExpRequired(int experience){
+		return (Constants.experienceLevels[getNextExpLevel(experience)-1]);
+	}
+	
+	public List<CompetitionDef> getAvailableCompetitions(){
+		Hashtable<Integer, CompetitionDef> competitions = new Hashtable<Integer, CompetitionDef>();		
+		List<CompetitionDef> comps = new CompetitionManager().getAllCompetitions(context);
+		
+		for (CompetitionDef cd : comps){
+			cd.isAvailable = false;
+			competitions.put(cd.id, cd); 
+		}
+		
+		competitions.get(Constants.Events.Austria.evt_quali_1).isAvailable = true;
+		
+		return new LinkedList<CompetitionDef>(competitions.values());
 	}
 }
 
