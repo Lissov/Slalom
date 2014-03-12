@@ -3,5 +3,6 @@
 	<dimen name="text_size">12sp</dimen>
 	<dimen name="text_size_big">18sp</dimen>
 	<dimen name="text_size_small">10sp</dimen>
+	<dimen name="text_evt_locked">30sp</dimen>
 	<dimen name="mp_setup_rowheight">40dp</dimen>
 </resources>

@@ -52,4 +52,5 @@
 	<color name="pencilHandle2">#CCCC00</color>
 	<color name="pencilHandle3">#AAAA00</color>	
 
+	<color name="event_locked">#BB1010</color>
 </resources>

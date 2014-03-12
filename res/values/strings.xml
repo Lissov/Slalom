@@ -79,6 +79,7 @@
 	<string name="career_tabEvents">Events</string>
 	
 	<string name="career_exp_nextLevel">Experience for next level: %1$s (Level %2$s)</string>
+	<string name="career_evt_locked">LOCKED</string>
 	
 	<string name="message_ok">Ok</string>
 	

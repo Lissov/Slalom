@@ -9,6 +9,8 @@ import android.widget.TextView;
 import android.widget.*;
 import com.pl.slalom.Controls.Adapters.*;
 import com.pl.slalom.data.race.*;
+import android.view.View.*;
+import android.view.*;
 
 public class CareerEventsActivity extends Activity {
 	@Override

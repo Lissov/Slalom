@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<dimen name="text_size">18sp</dimen>
+	<dimen name="text_size_big">27sp</dimen>
+	<dimen name="text_size_small">15sp</dimen>
+	<dimen name="text_size_evt_locked">45sp</dimen>
+	
 	<dimen name="mp_setup_rowheight">60dp</dimen>
 </resources>

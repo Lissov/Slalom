@@ -5,6 +5,9 @@ import com.pl.slalom.data.race.*;
 import android.app.*;
 import android.view.*;
 import android.view.View.*;
+import android.content.*;
+import android.opengl.*;
+import android.transition.*;
 
 public class CareerCompetitionAdapter extends BaseAdapter implements OnClickListener
 {
@@ -41,7 +44,7 @@ public class CareerCompetitionAdapter extends BaseAdapter implements OnClickList
 	public View getView(int position, View convertView, ViewGroup group)
 	{
 		if (convertView == null){
-			convertView = inflater.inflate(R.layout.event_item, group);
+			convertView = inflater.inflate(R.layout.event_item, group, false);
 		}
 		
 		CompetitionDef item = data[position];
@@ -49,6 +52,10 @@ public class CareerCompetitionAdapter extends BaseAdapter implements OnClickList
 			.setText(item.name);
 		((TextView)convertView.findViewById(R.id.career_event_desc))
 			.setText(item.description);
+		((TextView)convertView.findViewById(R.id.career_event_locked))
+			.setVisibility(item.isAvailable ? View.GONE : View.VISIBLE);
+		
+		convertView.setTag(item.id);
 			
 		return convertView;
 	}
@@ -56,6 +63,6 @@ public class CareerCompetitionAdapter extends BaseAdapter implements OnClickList
 	@Override
 	public void onClick(View view)
 	{
-		// TODO: Implement this method
+		Toast.makeText(activity, "" + view.getTag().toString(), Toast.LENGTH_LONG).show();
 	}
 }
