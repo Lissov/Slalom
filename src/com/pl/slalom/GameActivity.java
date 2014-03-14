@@ -25,7 +25,7 @@ public class GameActivity extends Activity implements ICommandHandler, IMoveCall
 		setContentView(R.layout.game);
 	
 		try{
-			int rundataId = getIntent().getIntExtra(Constants.Extra_RunData, -1);
+			int rundataId = getIntent().getIntExtra(Constants.Extra.RunData, -1);
 			runData = DataManager.getInstance().getRunData(rundataId);
 			
 			game = new Game(runData.slopeId, runData.skiId, runData.playerId, this);

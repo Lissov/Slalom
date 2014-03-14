@@ -25,6 +25,12 @@ public class RaceActivity extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.race);
 		
+		long id = getIntent().getExtras().getLong(Constants.Extra.CompetitionId, -1);
+		if (id == -1){
+			this.finish();
+			return;
+		}
+		
 		btnStartNext = (Button)findViewById(R.id.race_btnStartNext);
 		llRacers = (LinearLayout)findViewById(R.id.race_llPlayers);
 		tvNext = (TextView)findViewById(R.id.race_txtNext);
@@ -34,7 +40,7 @@ public class RaceActivity extends Activity
 		addHeader();
 
 		try{
-			comp = DataManager.getInstance().getCompetition();		
+			comp = DataManager.getInstance().getCompetitionById(id);
 			race = comp.races.get(comp.currentRace);
 			results = buildPlayerResults();
 
@@ -82,12 +88,12 @@ public class RaceActivity extends Activity
 				@Override
 				public void updateResult(RunResult result){
 					race.playerRuns[compN][runNum].runResult = result;
-					DataManager.getInstance().storeCompetition(comp, false);
+					DataManager.getInstance().updateCompetition(comp);
 				}
 			};
 			int rdId = DataManager.getInstance().pushRunData(rd);
 			Intent irun = new Intent(this, GameActivity.class);
-			irun.putExtra(Constants.Extra_RunData, rdId);
+			irun.putExtra(Constants.Extra.RunData, rdId);
 			irun.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 			startActivity(irun);
 		} catch (Exception ex){

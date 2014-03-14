@@ -44,7 +44,7 @@ public class MainActivity extends Activity
 	
 	public void multiplayerClick(View view){
 		try{
-			Competition comp = DataManager.getInstance().getCompetition();
+			Competition comp = DataManager.getInstance().getCompetitionByType(Constants.CompetitionType.MULTIPLAYER);
 		
 			boolean exists = comp != null && 
 					!(comp.currentRace == comp.races.size()-1 
@@ -79,14 +79,16 @@ public class MainActivity extends Activity
 	}
 	
 	private void setupNewMP(){
-		DataManager.getInstance().dropAllCompetitions();
+		DataManager.getInstance().dropCompetitions(Constants.CompetitionType.MULTIPLAYER);
 		
 		Intent isetup = new Intent(this, MultiplayerSetupActivity.class);
 		isetup.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 		startActivity(isetup);		
 	}
 	private void continueMP(){
+		long compid = DataManager.getInstance().getCompetitionByType(Constants.CompetitionType.MULTIPLAYER).id;
 		Intent irace = new Intent(this, RaceActivity.class);
+		irace.putExtra(Constants.Extra.CompetitionId, compid);
 		startActivity(irace);				
 	}
 }

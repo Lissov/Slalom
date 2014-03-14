@@ -8,8 +8,9 @@ public interface IDataLoader
 	void storeData(Data data);
 	
 	void deleteCompetition(Competition competition);
-	void insertCompetition(long playerId, Competition competition);
+	void insertCompetition(long playerId, Competition competition, int competitionType);
 	void updateCompetition(Competition competition);
 	
-	Competition getCompetition(long playerId);
+	Competition getCompetitionByType(long playerId, int competitionType);
+	Competition getCompetitionById(long competitionId);
 }

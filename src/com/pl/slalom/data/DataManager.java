@@ -71,9 +71,14 @@ public class DataManager
 		return result;
 	}
 	
-	public Competition getCompetition(){
+	public Competition getCompetitionById(long id){
+		Competition c = dataLoader.getCompetitionById(id);
+		return c;		
+	}
+	
+	public Competition getCompetitionByType(int competitionType){
 		try{
-			Competition c = dataLoader.getCompetition(data.id);
+			Competition c = dataLoader.getCompetitionByType(data.id, competitionType);
 			return c;
 		} catch(Exception ex){
 			Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -81,23 +86,25 @@ public class DataManager
 		}
 	}
 
-	public void storeCompetition(Competition value, boolean isnew){
+	public void insertCompetition(Competition value, int competitionType){
 		try{
-			if (isnew){
-				dataLoader.insertCompetition(data.id, value);
-			}
+			dataLoader.insertCompetition(data.id, value, competitionType);
 		
 			dataLoader.updateCompetition(value);
 		} catch(Exception ex){
 			Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
+
+	public void updateCompetition(Competition value){
+		dataLoader.updateCompetition(value);		
+	}
 	
-	public void dropAllCompetitions(){
-		Competition c = dataLoader.getCompetition(data.id);
+	public void dropCompetitions(int competitionType){
+		Competition c = dataLoader.getCompetitionByType(data.id, competitionType);
 		while (c != null){
 			dataLoader.deleteCompetition(c);
-			c = dataLoader.getCompetition(data.id);
+			c = dataLoader.getCompetitionByType(data.id, competitionType);
 		}
 	}
 	

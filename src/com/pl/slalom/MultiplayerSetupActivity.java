@@ -70,11 +70,12 @@ public class MultiplayerSetupActivity extends Activity implements OnItemSelected
 		}
 		c.races.add(r);
 		
-		DataManager.getInstance().dropAllCompetitions();
-		DataManager.getInstance().storeCompetition(c, true);
+		DataManager.getInstance().dropCompetitions(Constants.CompetitionType.CAREER);
+		DataManager.getInstance().insertCompetition(c, Constants.CompetitionType.CAREER);
 		
 		Intent irace = new Intent(this, RaceActivity.class);
-		startActivity(irace);
+		irace.putExtra(Constants.Extra.CompetitionId, c.id);
+		startActivity(irace);				
 	}
 	
 	private List<Slope> availableSlopes;

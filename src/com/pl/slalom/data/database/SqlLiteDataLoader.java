@@ -1,4 +1,5 @@
 package com.pl.slalom.data.database;
+import com.pl.slalom.*;
 import com.pl.slalom.data.*;
 import android.database.sqlite.*;
 import android.content.*;
@@ -35,7 +36,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			case 4: firstS = 13; break;
 			case 5: firstS = 14; break;
 			case 6: firstS = 15; break;
-			case 7: firstS = 17; break;
+			case 7: firstS = 19; break;
 		}
 		
 		int lastS = 0;
@@ -46,7 +47,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			case 4: lastS = 12; break;
 			case 5: lastS = 13; break;
 			case 6: lastS = 14; break;
-			case 7: lastS = 16; break;
+			case 7: lastS = 18; break;
 		}	
 		Toast.makeText(context, "Upgrading database", Toast.LENGTH_SHORT).show();
 		runScripts(db, firstS, lastS);
@@ -131,7 +132,11 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		//15
 		"ALTER TABLE player ADD COLUMN selectedSkiId INTEGER",
 		//16
-		"UPDATE player SET selectedSkiId = 10"
+		"UPDATE player SET selectedSkiId = 10",
+		//17
+		"ALTER TABLE competition ADD COLUMN type INTEGER",
+		//18
+		"UPDATE competition SET type = " + Constants.CompetitionType.CAREER
 	};
 
 	@Override
@@ -228,12 +233,13 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		db.close();
 	}
 
-	public void insertCompetition(long playerId, Competition competition){
+	public void insertCompetition(long playerId, Competition competition, int competitionType){
 		SQLiteDatabase db = this.getWritableDatabase();
 		
 		ContentValues v = new ContentValues();
 		v.put("playerId", playerId);
 		v.put("currentRace", competition.currentRace);
+		v.put("type", competitionType);
 		competition.id = db.insert("competition", null, v);
 		
 		for (int i = 0; i < competition.competitors.size(); i++){
@@ -314,11 +320,27 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		}
 	}
 	
-	public Competition getCompetition(long playerId){
+	public 	Competition getCompetitionByType(long playerId, int competitionType){
+		
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(
+			"Select id from competition where playerId = " 
+			+ playerId + " and type = " + competitionType 
+			, null);
+		if (!cursor.moveToFirst())
+			return null;
+			
+		int id = cursor.getInt(0);
+		return getCompetitionById(id);
+	}
+	
+	public Competition getCompetitionById(long competitionId){
 		
 		SQLiteDatabase db = this.getReadableDatabase();
 		
-		Cursor cursor = db.rawQuery("Select id, currentRace from competition where playerId = " + playerId, null);
+		Cursor cursor = db.rawQuery(
+				"Select id, currentRace from competition where id = " 
+				+ competitionId, null);
 		if (!cursor.moveToFirst())
 			return null;
 		
