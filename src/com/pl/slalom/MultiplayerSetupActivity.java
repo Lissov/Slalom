@@ -61,7 +61,7 @@ public class MultiplayerSetupActivity extends Activity implements OnItemSelected
 			availableSlopes.get(sTrack.getSelectedItemPosition()).id,
 			0,
 			runCount,
-			new RaceRun[plCount][2]);
+			new RaceRun[plCount][runCount]);
 		for (int i = 0; i < plCount; i++){
 			for (int j = 0; j < runCount; j++)
 			{

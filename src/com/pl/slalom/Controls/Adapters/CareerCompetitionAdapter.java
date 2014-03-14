@@ -7,7 +7,6 @@ import android.view.*;
 import android.view.View.*;
 import android.content.*;
 import android.opengl.*;
-import android.transition.*;
 
 public class CareerCompetitionAdapter extends BaseAdapter implements OnClickListener
 {
@@ -52,8 +51,8 @@ public class CareerCompetitionAdapter extends BaseAdapter implements OnClickList
 			.setText(item.name);
 		((TextView)convertView.findViewById(R.id.career_event_desc))
 			.setText(item.description);
-		((TextView)convertView.findViewById(R.id.career_event_locked))
-			.setVisibility(item.isAvailable ? View.GONE : View.VISIBLE);
+		/*((TextView)convertView.findViewById(R.id.career_event_locked))
+			.setVisibility(item.isAvailable ? View.GONE : View.VISIBLE);*/
 		
 		convertView.setTag(item.id);
 			

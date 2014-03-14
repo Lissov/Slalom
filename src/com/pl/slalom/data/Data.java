@@ -10,6 +10,12 @@ public class Data
 	public int experience;
 	public int money;
 	
+	public int selectedSkiId;
+	
 	public List<Integer> availableSkiIds;
 	public List<Integer> availableTrackIds;
+	
+	public String getFullName(){
+		return name + lastname.toUpperCase();
+	}
 }
