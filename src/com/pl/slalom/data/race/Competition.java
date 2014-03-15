@@ -8,4 +8,9 @@ public class Competition
 	public List<Race> races;
 	
 	public int currentRace;
+	
+	public boolean isFinished(){
+		return currentRace == races.size()-1 
+				&& races.get(currentRace).isFinished();
+	}
 }

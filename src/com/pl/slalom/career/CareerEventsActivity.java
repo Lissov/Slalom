@@ -1,9 +1,13 @@
 package com.pl.slalom.career;
 
+import com.pl.slalom.Constants;
+import com.pl.slalom.MultiplayerSetupActivity;
 import com.pl.slalom.R;
+import com.pl.slalom.RaceActivity;
 import com.pl.slalom.data.DataManager;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.*;
 import com.pl.slalom.Controls.Adapters.*;
@@ -20,6 +24,19 @@ public class CareerEventsActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.career_events);
 
+		Competition c = DataManager.getInstance().getCompetitionByType(Constants.CompetitionType.CAREER);
+		if (c != null)
+		{
+			if (c.isFinished()){
+				processCompetitionFinished(c);
+			} else {
+				Intent irace = new Intent(this, RaceActivity.class);
+				irace.putExtra(Constants.Extra.CompetitionId, c.id);
+				startActivity(irace);
+				return;
+			}
+		}
+		
 		try
 		{
 			events = 
@@ -44,6 +61,11 @@ public class CareerEventsActivity extends Activity {
 		}
 	}	
 	
+	private void processCompetitionFinished(Competition comp){
+		
+		DataManager.getInstance().dropCompetitions(Constants.CompetitionType.CAREER);
+	}
+	
 	private Competition getCompetition(int competitionId){
 		for (int i = 0; i < events.length; i++){
 			if (events[i].id == competitionId && events[i].isAvailable)
@@ -58,7 +80,12 @@ public class CareerEventsActivity extends Activity {
 		Competition c = getCompetition(competitionId);
 		if (c == null)
 			return;
+
+		DataManager.getInstance().dropCompetitions(Constants.CompetitionType.CAREER);
+		DataManager.getInstance().insertCompetition(c, Constants.CompetitionType.CAREER);
 		
-		
+		Intent irace = new Intent(this, RaceActivity.class);
+		irace.putExtra(Constants.Extra.CompetitionId, c.id);
+		startActivity(irace);
 	}
 }

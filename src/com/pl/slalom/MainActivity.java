@@ -46,9 +46,7 @@ public class MainActivity extends Activity
 		try{
 			Competition comp = DataManager.getInstance().getCompetitionByType(Constants.CompetitionType.MULTIPLAYER);
 		
-			boolean exists = comp != null && 
-					!(comp.currentRace == comp.races.size()-1 
-						&& comp.races.get(comp.currentRace).isFinished());
+			boolean exists = comp != null && !comp.isFinished();
 		
 			if (exists)
 			{
