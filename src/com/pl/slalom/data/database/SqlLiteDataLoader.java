@@ -7,10 +7,11 @@ import android.database.*;
 import android.widget.*;
 import java.util.*;
 import com.pl.slalom.data.race.*;
+import com.pl.slalom.data.achievment.*;
 
 public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 {
-	private static final int DB_VERSION = 7;
+	private static final int DB_VERSION = 8;
 	private Context context;
 	public SqlLiteDataLoader(Context context)
 	{
@@ -37,6 +38,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			case 5: firstS = 14; break;
 			case 6: firstS = 15; break;
 			case 7: firstS = 19; break;
+			case 8: firstS = 21; break;
 		}
 		
 		int lastS = 0;
@@ -48,6 +50,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			case 5: lastS = 13; break;
 			case 6: lastS = 14; break;
 			case 7: lastS = 18; break;
+			case 8: lastS = 20; break;
 		}	
 		Toast.makeText(context, "Upgrading database", Toast.LENGTH_SHORT).show();
 		runScripts(db, firstS, lastS);
@@ -136,7 +139,20 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		//17
 		"ALTER TABLE competition ADD COLUMN type INTEGER",
 		//18
-		"UPDATE competition SET type = " + Constants.CompetitionType.MULTIPLAYER
+		"UPDATE competition SET type = " + Constants.CompetitionType.MULTIPLAYER,
+		//v8
+		//19
+		"create table achievement (" +
+		"id INTEGER PRIMARY KEY AUTOINCREMENT," +
+		"playerId INTEGER," +
+		"achievementIdend INTEGER," +
+		"type INTEGER)",
+		//20
+		"create table resultRace (" +
+		"achievementid," +
+		"turns INTEGER," +
+		"time DECIMAL," +
+		"place INTEGER)"
 	};
 
 	@Override
@@ -275,6 +291,8 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 				}
 			}
 		}
+		
+		db.close();
 	}
 	
 	public void updateCompetition(Competition competition){
@@ -331,6 +349,10 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			return null;
 			
 		int id = cursor.getInt(0);
+
+		cursor.close();
+		db.close();
+		
 		return getCompetitionById(id);
 	}
 	
@@ -408,7 +430,74 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			cursor.close();
 		}
 		
+		db.close();
 		return c;
+	}
+
+	public List<Achievement> getAllAchievements(long playerId){
+		List<Achievement> result = new LinkedList<Achievement>();
+		SQLiteDatabase db = this.getReadableDatabase();
+
+		Cursor cursor = db.rawQuery(
+			"Select a.id, a.achievementIdent, a.type, " +
+			"r.turns, r.time, r.place " +
+			"from achivement a " + 
+			"left outer join resultRace r on r.achievementid = r.id " +
+			"where a.playerId = " + playerId, null);
+		if (!cursor.moveToFirst())
+			return null;
+		do {
+			Achievement a = new Achievement();
+			a.id = cursor.getLong(0);
+			a.identifier = cursor.getInt(1);
+			int type = cursor.getInt(2);
+			if (type == RaceResult.TYPE){
+				RaceResult r = new RaceResult();
+				r.turns = cursor.getInt(3);
+				r.time = cursor.getFloat(4);
+				r.place = cursor.getInt(5);
+				a.result = r;
+			} 
+			result.add(a);
+		} while (cursor.moveToNext());
+		
+		cursor.close();
+		db.close();
+		return result;
+	}
+	
+	public void storeAchievement(long playerId, Achievement a){
+		SQLiteDatabase db = this.getReadableDatabase();
+	
+		if (a.id > 0){
+
+			ContentValues v = new ContentValues();
+			v.put("playerId", playerId);
+			v.put("achievementIdend", a.identifier);
+			v.put("type", a.result.getType());
+			a.id = db.insert("achievement", null, v);
+			if (a.result.getType() == RaceResult.TYPE){
+				RaceResult rr = (RaceResult)a.result;
+				v = new ContentValues();
+				v.put("achievemetid", a.id);
+				v.put("turns", rr.turns);
+				v.put("time", rr.time);
+				v.put("place", rr.place);
+				db.insert("resultRace", null, v);
+			}
+		} else{
+			if (a.result.getType() == RaceResult.TYPE){
+				RaceResult rr = (RaceResult)a.result;
+				ContentValues v = new ContentValues();
+				v.put("turns", rr.turns);
+				v.put("time", rr.time);
+				v.put("place", rr.place);
+				db.update("resultRace", v, "achievementid = ",
+					  new String[] {String.valueOf(a.id)});
+			}
+		}
+
+		db.close();
 	}
 
 	public void ExecuteNonQuery(String sql){

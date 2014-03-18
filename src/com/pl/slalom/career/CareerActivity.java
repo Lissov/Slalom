@@ -52,6 +52,12 @@ public class CareerActivity extends TabActivity implements OnTabChangeListener
 	
 	private void processCompetitionFinished(Competition comp){		
 		DataManager.getInstance().dropCompetitions(Constants.CompetitionType.CAREER);
+		
+		var achievement = getAchievement(comp);
+		if (better){
+			inform();
+		}
+		saveAchievement();
 	}
 
 	@Override
