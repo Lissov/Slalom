@@ -10,6 +10,7 @@ import android.content.res.Resources;
 import android.widget.*;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
+import com.pl.slalom.data.race.*;
 
 public class CareerActivity extends TabActivity implements OnTabChangeListener
 {
@@ -46,8 +47,40 @@ public class CareerActivity extends TabActivity implements OnTabChangeListener
 		if (data.experience < 0){
 			startCareer();
 		}
+
 	}
 	
+	private void processCompetitionFinished(Competition comp){		
+		DataManager.getInstance().dropCompetitions(Constants.CompetitionType.CAREER);
+	}
+
+	@Override
+	protected void onResume()
+	{
+		super.onResume();
+		
+		if (DataManager.getInstance().getStatus().RacePaused)
+		{
+			finish();
+			return;
+		}
+
+		Competition c = DataManager.getInstance().getCompetitionByType(Constants.CompetitionType.CAREER);
+		if (c != null)
+		{
+			if (c.isStarted()){
+				if (c.isFinished()){
+					processCompetitionFinished(c);
+				} else {
+					Intent irace = new Intent(this, RaceActivity.class);
+					irace.putExtra(Constants.Extra.CompetitionId, c.id);
+					startActivity(irace);
+					return;
+				}
+			}
+		}
+	}	
+
 	@Override
 	public void onTabChanged(String arg0) {
 		// TODO Auto-generated method stub

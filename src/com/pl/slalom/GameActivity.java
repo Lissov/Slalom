@@ -38,7 +38,7 @@ public class GameActivity extends Activity implements ICommandHandler, IMoveCall
 			controlsView = new ControlsView(this, game, this);
 			llControls.addView(controlsView);
 		} catch (Exception ex){
-			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Error GA1: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
 

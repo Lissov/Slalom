@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<!--FrameLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-	<LinearLayout
+    android:layout_height="match_parent"-->
+<LinearLayout
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent">
+	<!--LinearLayout
 		android:layout_width="fill_parent"
 		android:layout_height="wrap_content"
-		android:orientation="horizontal" >
+		android:orientation="horizontal" -->
 
 		<ImageView
 			android:layout_width="100dp"
@@ -30,11 +34,11 @@
 
 	</LinearLayout>
 	
-	<TextView
+	<!--TextView
 		android:id="@+id/career_event_locked"
 		android:layout_width="fill_parent"
 		android:layout_height="fill_parent"
 		android:text="@string/career_evt_locked"
 		android:textSize="@dimen/text_size_evt_locked"
-		android:color="@color/event_locked" />
-</FrameLayout>
+		android:textColor="@color/event_locked" />
+</FrameLayout-->

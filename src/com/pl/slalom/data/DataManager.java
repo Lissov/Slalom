@@ -81,7 +81,7 @@ public class DataManager
 			Competition c = dataLoader.getCompetitionByType(data.id, competitionType);
 			return c;
 		} catch(Exception ex){
-			Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "Error DM1: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 			return null;
 		}
 	}
@@ -92,7 +92,7 @@ public class DataManager
 		
 			dataLoader.updateCompetition(value);
 		} catch(Exception ex){
-			Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "Error DM2: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
 
@@ -160,13 +160,21 @@ public class DataManager
 		List<CompetitionDef> comps = new CompetitionManager().getAllCompetitions(context);
 		
 		for (CompetitionDef cd : comps){
-			cd.isAvailable = false;
+			cd.isAvailable = cd.availabilityCalc.isAvailable();
 			competitions.put(cd.id, cd); 
 		}
 		
-		competitions.get(Constants.Events.Austria.evt_quali_1).isAvailable = true;
+		//competitions.get(Constants.Events.Austria.evt_quali_1).isAvailable = true;
 		
 		return new LinkedList<CompetitionDef>(competitions.values());
+	}
+	
+	private ProgramStatus status;
+	public ProgramStatus getStatus(){
+		if (status == null)
+			status = new ProgramStatus();
+		
+		return status;
 	}
 }
 

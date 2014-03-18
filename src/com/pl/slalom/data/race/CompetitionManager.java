@@ -13,8 +13,16 @@ public class CompetitionManager
 {
 	private Resources r;
 	
-	private CompetitionDef getComp(int id, int[] slopeIds, int[] runCounts, int nameRes, int descRes){
-		return new CompetitionDef(id, slopeIds, runCounts, r.getString(nameRes), r.getString(descRes));
+	private CompetitionDef getComp(int id, CompetitionType type,
+								   int[] slopeIds, int[] runCounts,
+								   int nameRes, int descRes,
+								   int lockedExplainationRes,
+								   CompetitionAvailCalc availCalc)
+	{
+		return new CompetitionDef(id, type, slopeIds, runCounts, 
+								  r.getString(nameRes), r.getString(descRes),
+								  r.getString(lockedExplainationRes),
+								  availCalc);
 	}
 	
 	public List<CompetitionDef> getAllCompetitions(Context context){
@@ -23,18 +31,30 @@ public class CompetitionManager
 		List<CompetitionDef> result = new LinkedList<CompetitionDef>();
 		
 		result.add(getComp(
-				Constants.Events.Austria.evt_quali_1, 
-				new int[] {Constants.Slopes.Austria.hohewandwiese},
-				new int[] {1},
-				R.string.evt_au_quali1_name, R.string.evt_au_quali1_desc
-				));
+					   Constants.Events.Austria.evt_quali_1,
+					   CompetitionType.Qualification,
+					   new int[] {Constants.Slopes.Austria.hohewandwiese},
+					   new int[] {1},
+					   R.string.evt_au_quali1_name, R.string.evt_au_quali1_desc,
+					   R.string.evt_au_quali1_locked,
+					   new CompetitionAvailCalc(){
+						   public boolean isAvailable()
+						   { return true; }
+					   }
+				   ));
 		
 		result.add(getComp(
-				Constants.Events.Austria.evt_locchamp_1, 
+				Constants.Events.Austria.evt_locchamp_1,
+				CompetitionType.LocalChamp,
 				new int[] {Constants.Slopes.Austria.hohewandwiese},
 				new int[] {2},
-				R.string.evt_au_champ1_name, R.string.evt_au_champ1_desc
-				));
+				R.string.evt_au_champ1_name, R.string.evt_au_champ1_desc,
+				R.string.evt_au_champ1_locked,
+				new CompetitionAvailCalc(){
+					public boolean isAvailable()
+					{ return false; }
+				}
+			));
 		
 		
 		return result;

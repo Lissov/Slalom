@@ -18,6 +18,7 @@
 	<string name="mp_start">START</string>
 	
 	<string name="race_startNext">Start run</string>
+	<string name="race_eventFinished">Proceed</string>	
 	<string name="race_headRank">Rank</string>
 	<string name="race_headCountry">Country</string>
 	<string name="race_headName">Skier</string>
@@ -80,12 +81,15 @@
 	
 	<string name="career_exp_nextLevel">Experience for next level: %1$s (Level %2$s)</string>
 	<string name="career_evt_locked">LOCKED</string>
+	<string name="career_evt_locked_expl">Event is locked</string>
 	
 	<string name="message_ok">Ok</string>
 	
 	<string name="evt_au_quali1_name">Local club skiing</string>
 	<string name="evt_au_quali1_desc">Skiing day in a local club. Improve results to qualify for real challenges.</string>
+	<string name="evt_au_quali1_locked">This event is always available.</string>
 	
 	<string name="evt_au_champ1_name">Local club champ</string>
 	<string name="evt_au_champ1_desc">Small local championship. No entry fee.</string>
+	<string name="evt_au_champ1_locked">Finish qualification in 18 or less turns</string>
 </resources>

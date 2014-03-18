@@ -137,7 +137,7 @@ public class SlopeView extends View
 			drawMakingMove(canvas);
 			
 		} catch (Exception ex){
-			Toast.makeText(context, "Error: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "Error SV2: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -263,7 +263,7 @@ public class SlopeView extends View
 
 			return super.onTouchEvent(event);
 		} catch(Exception ex){
-			Toast.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(context, "Error SV1: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 			return false;
 		}
 	}

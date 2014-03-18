@@ -22,9 +22,16 @@ public class MainActivity extends Activity
 		try{
 			DataManager.getInstance().Init(this);
 		} catch (Exception ex){
-			Toast.makeText(this, "Error: " + ex.getMessage(), Toast.LENGTH_LONG).show();			
+			Toast.makeText(this, "Error: MA2" + ex.getMessage(), Toast.LENGTH_LONG).show();			
 		}
     }
+
+	@Override
+	protected void onResume()
+	{
+		DataManager.getInstance().getStatus().RacePaused = false;
+		super.onResume();
+	}
 	
 	public void trainingClick(View view){
 		//startActivity(new Intent(this, TrainingActivity.class));
@@ -72,7 +79,7 @@ public class MainActivity extends Activity
 				setupNewMP();
 			}
 		} catch(Exception ex){
-			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Error MA1: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
 	

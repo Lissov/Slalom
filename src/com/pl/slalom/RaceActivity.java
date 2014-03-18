@@ -48,7 +48,7 @@ public class RaceActivity extends Activity
 			update();
 		}
 		catch(Exception ex){
-			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Error RA1: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -57,6 +57,16 @@ public class RaceActivity extends Activity
 	{
 		super.onResume();
 		update();
+		DataManager.getInstance().getStatus().RacePaused = false;
+	}
+
+	@Override
+	public void onBackPressed()
+	{
+		super.onBackPressed();
+
+		if (comp.isStarted() && !comp.isFinished())
+			DataManager.getInstance().getStatus().RacePaused = true;
 	}
 	
 	private void update(){
@@ -70,13 +80,19 @@ public class RaceActivity extends Activity
 			prepareNextTurn();
 		}
 		catch(Exception ex){
-			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "Error RA2: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
 		}
 	}
 	
 	public void doStartNext(View view){
 		try{
 			int plN = getNextPlayer();
+			
+			if (plN == -1){
+				finish();
+				return;
+			}
+			
 			final int compN = results[plN].compN;
 			final int runNum = getCurrentRun();
 		
@@ -97,14 +113,15 @@ public class RaceActivity extends Activity
 			irun.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
 			startActivity(irun);
 		} catch (Exception ex){
-			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Error RA3: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
 	
 	private void prepareNextTurn(){
 		int np = getNextPlayer();
 		if (np == -1){
-			btnStartNext.setEnabled(false);
+			btnStartNext.setEnabled(true);
+			btnStartNext.setText(R.string.race_eventFinished);
 			tvNext.setText(String.format(
 				this.getResources().getString(R.string.race_Winner),
 				comp.competitors.get(results[0].compN).name)

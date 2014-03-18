@@ -24,4 +24,8 @@ public class Race
 		
 		return true;
 	}
+	
+	public boolean isStarted(){
+		return playerRuns[0][0].runResult.status != RunStatus.NotStarted;
+	}
 }

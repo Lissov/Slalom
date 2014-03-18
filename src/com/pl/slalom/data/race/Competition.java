@@ -13,4 +13,9 @@ public class Competition
 		return currentRace == races.size()-1 
 				&& races.get(currentRace).isFinished();
 	}
+	
+	public boolean isStarted(){
+		return currentRace > 0 
+			|| races.get(currentRace).isStarted();
+	}
 }

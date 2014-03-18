@@ -136,7 +136,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		//17
 		"ALTER TABLE competition ADD COLUMN type INTEGER",
 		//18
-		"UPDATE competition SET type = " + Constants.CompetitionType.CAREER
+		"UPDATE competition SET type = " + Constants.CompetitionType.MULTIPLAYER
 	};
 
 	@Override

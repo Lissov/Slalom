@@ -41,7 +41,7 @@ public class MultiplayerSetupActivity extends Activity implements OnItemSelected
 		setTracks();
 		setModes();
 		} catch(Exception ex){
-			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Error MPSA3: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -95,7 +95,7 @@ public class MultiplayerSetupActivity extends Activity implements OnItemSelected
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			sTrack.setAdapter(adapter);	
 		} catch(Exception ex){
-			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Error MPSA2: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
 	
@@ -115,7 +115,7 @@ public class MultiplayerSetupActivity extends Activity implements OnItemSelected
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			sMode.setAdapter(adapter);	
 		} catch(Exception ex){
-			Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Error MPSA1: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
 
