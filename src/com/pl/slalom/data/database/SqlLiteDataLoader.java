@@ -1,6 +1,7 @@
 package com.pl.slalom.data.database;
 import com.pl.slalom.*;
 import com.pl.slalom.data.*;
+import com.pl.slalom.data.race.*;
 import android.database.sqlite.*;
 import android.content.*;
 import android.database.*;
@@ -11,7 +12,7 @@ import com.pl.slalom.data.achievment.*;
 
 public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 {
-	private static final int DB_VERSION = 8;
+	private static final int DB_VERSION = 9;
 	private Context context;
 	public SqlLiteDataLoader(Context context)
 	{
@@ -38,7 +39,8 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			case 5: firstS = 14; break;
 			case 6: firstS = 15; break;
 			case 7: firstS = 19; break;
-			case 8: firstS = 21; break;
+			case 8: firstS = 24; break;
+			case 9: firstS = 27; break;
 		}
 		
 		int lastS = 0;
@@ -50,7 +52,8 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			case 5: lastS = 13; break;
 			case 6: lastS = 14; break;
 			case 7: lastS = 18; break;
-			case 8: lastS = 20; break;
+			case 8: lastS = 23; break;
+			case 9: lastS = 26; break;
 		}	
 		Toast.makeText(context, "Upgrading database", Toast.LENGTH_SHORT).show();
 		runScripts(db, firstS, lastS);
@@ -142,16 +145,34 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		"UPDATE competition SET type = " + Constants.CompetitionType.MULTIPLAYER,
 		//v8
 		//19
-		"create table achievement (" +
+		"CREATE TABLE achievement (" +
 		"id INTEGER PRIMARY KEY AUTOINCREMENT," +
 		"playerId INTEGER," +
 		"achievementIdend INTEGER," +
 		"type INTEGER)",
 		//20
-		"create table resultRace (" +
+		"CREATE TABLE resultRace (" +
 		"achievementid," +
 		"turns INTEGER," +
 		"time DECIMAL," +
+		"place INTEGER)",
+		//21
+		"ALTER TABLE race ADD COLUMN resultMeasureType INTEGER",
+		//22
+		"UPDATE race SET resultMeasureType = " + convert(ResultMeasureType.TurnsAndTime),
+		//23
+		"ALTER TABLE competition ADD COLUMN competitionDefId INTEGER",
+		//v9
+		//24
+		"DROP TABLE resultRace",
+		//25
+		"CREATE TABLE resultSlope (" +
+		"achievementid," +
+		"turns INTEGER," +
+		"time DECIMAL)",
+		//26
+		"CREATE TABLE resultCompetition (" +
+		"achievementid," +
 		"place INTEGER)"
 	};
 
@@ -256,6 +277,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		v.put("playerId", playerId);
 		v.put("currentRace", competition.currentRace);
 		v.put("type", competitionType);
+		v.put("competitionDefId", competition.definition == null ? -1 : competition.definition.id);
 		competition.id = db.insert("competition", null, v);
 		
 		for (int i = 0; i < competition.competitors.size(); i++){
@@ -361,12 +383,16 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		SQLiteDatabase db = this.getReadableDatabase();
 		
 		Cursor cursor = db.rawQuery(
-				"Select id, currentRace from competition where id = " 
+				"Select id, currentRace, competitionDefId from competition where id = " 
 				+ competitionId, null);
 		if (!cursor.moveToFirst())
 			return null;
 		
-		Competition c = new Competition();
+		int defId = cursor.getInt(2);
+		
+		Competition c = new Competition(defId > 0 
+			? new CompetitionManager().getCompetitionDef(context, defId)
+			: null);
 		c.id = cursor.getInt(0);
 		c.currentRace = cursor.getInt(1);
 		cursor.close();
@@ -389,7 +415,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		cursor.close();
 
 		c.races = new LinkedList<Race>();
-		cursor = db.rawQuery("select id, trackId, orderNum, runCount from race where competitionId = " + c.id, null);
+		cursor = db.rawQuery("select id, trackId, orderNum, runCount, resultMeasureType from race where competitionId = " + c.id, null);
 		if (cursor.moveToFirst()){
 			do{
 				long id = cursor.getInt(0);
@@ -398,6 +424,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 					cursor.getInt(1),
 					cursor.getInt(2),
 					runc,
+					convert(cursor.getInt(3)),
 					new RaceRun[c.competitors.size()][runc]);
 				r.id = id;
 				c.races.add(r);
@@ -433,16 +460,36 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		db.close();
 		return c;
 	}
+	
+	public int convert(ResultMeasureType resType){
+		switch (resType){
+			case Time: return 1;
+			case Turns: return 2;
+			case TurnsAndTime: return 3;
+			default: return -1;
+		}
+	}
 
+	public ResultMeasureType convert(int resType){
+		switch (resType){
+			case 1: return ResultMeasureType.Time;
+			case 2: return ResultMeasureType.Turns;
+			case 3: return ResultMeasureType.TurnsAndTime;
+			default: return null;
+		}
+	}
+	
 	public List<Achievement> getAllAchievements(long playerId){
 		List<Achievement> result = new LinkedList<Achievement>();
 		SQLiteDatabase db = this.getReadableDatabase();
 
 		Cursor cursor = db.rawQuery(
 			"Select a.id, a.achievementIdent, a.type, " +
-			"r.turns, r.time, r.place " +
+			"rs.turns, rs.time, " +
+			"rc.place " +
 			"from achivement a " + 
-			"left outer join resultRace r on r.achievementid = r.id " +
+			"left outer join resultSlope rs on rs.achievementid = a.id " +
+			"left outer join resultCompetition rc on rc.achievementid = a.id " +
 			"where a.playerId = " + playerId, null);
 		if (!cursor.moveToFirst())
 			return null;
@@ -451,12 +498,22 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			a.id = cursor.getLong(0);
 			a.identifier = cursor.getInt(1);
 			int type = cursor.getInt(2);
-			if (type == RaceResult.TYPE){
-				RaceResult r = new RaceResult();
-				r.turns = cursor.getInt(3);
-				r.time = cursor.getFloat(4);
-				r.place = cursor.getInt(5);
-				a.result = r;
+			switch (type)
+			{
+				case SlopeResult.TYPE:
+					SlopeResult r = new SlopeResult(
+						cursor.getInt(3),
+						cursor.getFloat(4)
+					);
+					a.result = r;
+					break;
+				case CompetitionResult.TYPE:
+					CompetitionResult cr = new CompetitionResult(
+						cursor.getInt(5)
+					);
+					a.result = cr;
+					break;
+					
 			} 
 			result.add(a);
 		} while (cursor.moveToNext());
@@ -476,28 +533,36 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			v.put("achievementIdend", a.identifier);
 			v.put("type", a.result.getType());
 			a.id = db.insert("achievement", null, v);
-			if (a.result.getType() == RaceResult.TYPE){
-				RaceResult rr = (RaceResult)a.result;
-				v = new ContentValues();
-				v.put("achievemetid", a.id);
-				v.put("turns", rr.turns);
-				v.put("time", rr.time);
-				v.put("place", rr.place);
-				db.insert("resultRace", null, v);
-			}
+			
+			insertUpdateResult(a, db, true);
 		} else{
-			if (a.result.getType() == RaceResult.TYPE){
-				RaceResult rr = (RaceResult)a.result;
-				ContentValues v = new ContentValues();
-				v.put("turns", rr.turns);
-				v.put("time", rr.time);
-				v.put("place", rr.place);
-				db.update("resultRace", v, "achievementid = ",
-					  new String[] {String.valueOf(a.id)});
-			}
+			insertUpdateResult(a, db, false);
 		}
 
 		db.close();
+	}
+	
+	private void insertUpdateResult(Achievement a, SQLiteDatabase db, boolean insert){
+		ContentValues v = new ContentValues();
+		String tableName = "none";
+		if (a.result.getType() == SlopeResult.TYPE){
+			SlopeResult rr = (SlopeResult)a.result;
+			v.put("achievemetid", a.id);
+			v.put("turns", rr.turns);
+			v.put("time", rr.time);
+			tableName = "resultSlope";
+		}
+		if (a.result.getType() == CompetitionResult.TYPE){
+			v.put("achievemetid", a.id);
+			v.put("place", ((CompetitionResult)a.result).place);
+			tableName = "resultCompetition";			
+		}
+
+		if (insert)		
+			db.insert(tableName, null, v);
+		else
+			db.update(tableName, v, "achievementid = ",
+					  new String[] {String.valueOf(a.id)});
 	}
 
 	public void ExecuteNonQuery(String sql){

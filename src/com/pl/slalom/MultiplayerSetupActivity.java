@@ -46,7 +46,7 @@ public class MultiplayerSetupActivity extends Activity implements OnItemSelected
 	}
 	
 	public void btnStartClick(View view){
-		Competition c = new Competition();
+		Competition c = new Competition(null);
 		c.currentRace = 0;
 		
 		c.competitors = new LinkedList<Competitor>();
@@ -60,7 +60,7 @@ public class MultiplayerSetupActivity extends Activity implements OnItemSelected
 		Race r = new Race(
 			availableSlopes.get(sTrack.getSelectedItemPosition()).id,
 			0,
-			runCount,
+			runCount, ResultMeasureType.TurnsAndTime,
 			new RaceRun[plCount][runCount]);
 		for (int i = 0; i < plCount; i++){
 			for (int j = 0; j < runCount; j++)
@@ -87,7 +87,7 @@ public class MultiplayerSetupActivity extends Activity implements OnItemSelected
 			
 			String[] trackNames = new String[availableSlopes.size()];
 			for (int i = 0; i<availableSlopes.size(); i++)
-				trackNames[i] = availableSlopes.get(i).name;
+				trackNames[i] = SlopeManager.getSlopeName(this, availableSlopes.get(i).id);
 			ArrayAdapter<String> adapter = new ArrayAdapter<String>(
 				this, 
 				android.R.layout.simple_spinner_item,

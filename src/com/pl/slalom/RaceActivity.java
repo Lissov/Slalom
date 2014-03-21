@@ -17,7 +17,7 @@ public class RaceActivity extends Activity
 	Competition comp;
 	private View[] racerViews;
 	private Race race;
-	private PlayerResult[] results;
+	private PlayerRaceResult[] results;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -197,9 +197,7 @@ public class RaceActivity extends Activity
 				.setText(rc);
 			
 			((TextView)racerViews[i].findViewById(R.id.race_rTurns))
-				.setText(results[i].bestRes == null 
-							? results[i].resTxt 
-							: "" + results[i].bestRes.turns);
+				.setText(getResultTxt(results[i]));
 			((TextView)racerViews[i].findViewById(R.id.race_rTime))
 				.setText(results[i].bestRes == null 
 						 ? "" 
@@ -207,80 +205,20 @@ public class RaceActivity extends Activity
 		}
 	}
 	
-	private PlayerResult[] buildPlayerResults(){
-		PlayerResult[] res = new PlayerResult[comp.competitors.size()];
-		
-		for (int i = 0; i<comp.competitors.size(); i++){
-			res[i] = new PlayerResult();
-			res[i].compN = i;
-			res[i].bestRes = getBestResult(i);
-			res[i].runCount = getRunCount(i);
-			if (res[i].bestRes == null){
-				if (res[i].runCount == 0)
-					res[i].resTxt = getResources().getString(R.string.race_notStarted);
-				else
-					res[i].resTxt = getResources().getString(R.string.race_notFinished);
-			}
+	private String getResultTxt(PlayerRaceResult result){
+		switch (result.overallStatus){
+			case NotStarted: 
+				return	getResources().getString(R.string.race_notStarted);
+			case NotFinished:
+				return getResources().getString(R.string.race_notFinished);
+			case HasResult:
+				return "" + result.bestRes.turns;
+			default:
+				return "error";
 		}
-		
-		Arrays.sort(res, getComparator());
-		for (int i = 0; i<comp.competitors.size(); i++){
-			res[i].rank = i + 1;
-		}
-		return res;
 	}
 	
-	private RunResult getBestResult(int cNum){
-		RunResult bestRes = null;
-		
-		for (int r = 0; r < race.runCount; r++){
-			if (race.playerRuns[cNum][r].runResult.status == RunStatus.NotStarted){
-				break;
-			}
-			if (race.playerRuns[cNum][r].runResult.status == RunStatus.Finished){
-				if (bestRes == null 
-					|| RunResultComparator
-						.getComparator()
-						.compare(bestRes, 
-							race.playerRuns[cNum][r].runResult
-						) > 0
-					)
-				{
-					bestRes = race.playerRuns[cNum][r].runResult;
-				}
-			}
-		}
-		
-		return bestRes;
-	}
-	
-	private int getRunCount(int cNum){
-		int runC = 0;
-		while (runC < race.runCount &&
-				race.playerRuns[cNum][runC].runResult.status != RunStatus.NotStarted){
-			runC++;
-		}
-		return runC;
-	}
-		
-	private static Comparator<PlayerResult> getComparator(){
-		return new Comparator<PlayerResult>(){
-			public int compare(PlayerResult pr1, PlayerResult pr2){
-				if (pr1.bestRes == null && pr2.bestRes == null)
-					return Integer.valueOf(pr1.compN).compareTo(pr2.compN);
-				if (pr1.bestRes == null) return +1;
-				if (pr2.bestRes == null) return -1;
-				return RunResultComparator.getComparator().compare(
-					pr1.bestRes, pr2.bestRes);
-			}
-		};
-	}
-	
-	class PlayerResult {
-		public int compN;
-		public int rank;
-		public RunResult bestRes;
-		public int runCount;
-		public String resTxt;
+	private PlayerRaceResult[] buildPlayerResults(){
+		return race.getResults();
 	}
 }

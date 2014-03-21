@@ -9,6 +9,7 @@ import com.pl.slalom.track.*;
 import android.widget.*;
 import com.pl.slalom.data.race.*;
 import com.pl.slalom.player.*;
+import com.pl.slalom.data.achievment.*;
 
 public class DataManager
 {
@@ -175,6 +176,14 @@ public class DataManager
 			status = new ProgramStatus();
 		
 		return status;
+	}
+	
+	public List<Achievement> getAchievements(){
+		return dataLoader.getAllAchievements(data.id);
+	}
+	
+	public void storeAchievement(Achievement a){
+		dataLoader.storeAchievement(data.id, a);
 	}
 }
 

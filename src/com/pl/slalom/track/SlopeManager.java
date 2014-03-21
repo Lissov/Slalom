@@ -1,14 +1,19 @@
 package com.pl.slalom.track;
 
-import com.pl.slalom.Constants;
+import com.pl.slalom.*;
+import android.content.*;
+import android.content.res.*;
 
 public class SlopeManager
 {
 	public Slope getSlope(int number){
 		switch (number){
-			case 1: return getSlope1();
-			case 2: return getSlope2();
-			case 3: return getSlope3();
+			case Constants.Slopes.Training.first:
+				return getSlope_train_first();
+			case Constants.Slopes.Training.tramplin:
+				return getSlope_train_tramplin();
+			case Constants.Slopes.Training.slalom:
+				return getSlope_train_slalom();
 			case Constants.Slopes.Austria.hohewandwiese: 
 				return getSlope_au_hww();
 			default:
@@ -16,8 +21,8 @@ public class SlopeManager
 		}
 	}
 	
-	private Slope getSlope1(){
-		Slope slope = new Slope(1, "Short training course");
+	private Slope getSlope_train_first(){
+		Slope slope = new Slope(Constants.Slopes.Training.first);
 		slope.width = 12;
 		slope.gates = new Gate[5];
 		slope.tramplins = new Tramplin[0];
@@ -33,8 +38,8 @@ public class SlopeManager
 		return slope;
 	}
 	
-	private Slope getSlope2(){
-		Slope slope = new Slope(2, "Tramplin training");
+	private Slope getSlope_train_tramplin(){
+		Slope slope = new Slope(Constants.Slopes.Training.tramplin);
 		slope.width = 20;
 		slope.gates = new Gate[5];
 		slope.tramplins = new Tramplin[1];
@@ -50,8 +55,8 @@ public class SlopeManager
 		return slope;
 	}
 
-	private Slope getSlope3(){
-		Slope slope = new Slope(3, "Slalom training course");
+	private Slope getSlope_train_slalom(){
+		Slope slope = new Slope(Constants.Slopes.Training.slalom);
 		slope.width = 18;
 		slope.gates = new Gate[13];
 		slope.tramplins = new Tramplin[1];
@@ -76,7 +81,7 @@ public class SlopeManager
 	}
 
 	private Slope getSlope_au_hww(){
-		Slope slope = new Slope(Constants.Slopes.Austria.hohewandwiese, "Hohe Wand Wiese");
+		Slope slope = new Slope(Constants.Slopes.Austria.hohewandwiese);
 		slope.width = 13;
 		slope.gates = new Gate[6];
 		slope.tramplins = new Tramplin[0];
@@ -90,5 +95,23 @@ public class SlopeManager
 		slope.gates[5] = new Gate(18.95f, 6, 8, GateType.Finish);
 
 		return slope;
+	}
+	
+	public static String getSlopeName(Context context, int slopeId){
+		Resources r = context.getResources();
+		
+		switch (slopeId)
+		{
+			case Constants.Slopes.Training.first:
+				return r.getString(R.string.slope_train_first);
+			case Constants.Slopes.Training.tramplin:
+				return r.getString(R.string.slope_train_tramplin);
+			case Constants.Slopes.Training.slalom:
+				return r.getString(R.string.slope_train_slalom);
+			case Constants.Slopes.Austria.hohewandwiese:
+				return r.getString(R.string.slope_at_hww);
+			default:
+				return "Undefined";
+		}
 	}
 }

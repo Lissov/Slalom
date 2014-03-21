@@ -1,4 +1,5 @@
 package com.pl.slalom;
+import com.pl.slalom.data.achievment.*;
 
 //import android.graphics.*;
 
@@ -9,6 +10,11 @@ public class Constants
 	public static class Extra{
 		public static final String RunData = "rundataId";
 		public static final String CompetitionId = "competitionId";
+	}
+	
+	public static class Achievement{
+		public static final int SlopeBase = 20000;
+		public static final int CompetitionBase = 10000;
 	}
 	
 	public static final int MaxRecordedSteps = 1000;
@@ -40,6 +46,11 @@ public class Constants
 	}
 	
 	public static class Slopes{
+		public static class Training{
+			public static final int first = 1;			
+			public static final int tramplin = 2;			
+			public static final int slalom = 3;			
+		}
 		public static class Austria{	
 			public static final int hohewandwiese = 10;
 		}

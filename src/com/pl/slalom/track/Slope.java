@@ -3,7 +3,6 @@ package com.pl.slalom.track;
 public class Slope
 {
 	public int id;	
-	public String name;
 	
 	public int width;
 	public Gate[] gates;
@@ -11,10 +10,9 @@ public class Slope
 	
 	public int startPos;
 
-	public Slope(int id, String name)
+	public Slope(int id)
 	{
 		this.id = id;
-		this.name = name;
 	}
 }
 

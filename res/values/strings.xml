@@ -92,4 +92,13 @@
 	<string name="evt_au_champ1_name">Local club champ</string>
 	<string name="evt_au_champ1_desc">Small local championship. No entry fee.</string>
 	<string name="evt_au_champ1_locked">Finish qualification in 18 or less turns</string>
+	
+	<string name="new_record">New record for:</string>
+	<string name="new_record_comp">New best result for %1$s: place %2$s!</string>
+	
+	<string name="slope_train_first">Short training course</string>
+	<string name="slope_train_tramplin">Tramplin training course</string>
+	<string name="slope_train_slalom">Slalom training course</string>
+	<string name="slope_at_hww">Hohe Wand Wiese</string>
+	
 </resources>

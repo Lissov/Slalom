@@ -11,6 +11,9 @@ import android.widget.*;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TabHost.TabSpec;
 import com.pl.slalom.data.race.*;
+import com.pl.slalom.data.race.achievement.*;
+import com.pl.slalom.data.achievment.*;
+import java.util.*;
 
 public class CareerActivity extends TabActivity implements OnTabChangeListener
 {
@@ -51,13 +54,30 @@ public class CareerActivity extends TabActivity implements OnTabChangeListener
 	}
 	
 	private void processCompetitionFinished(Competition comp){		
-		DataManager.getInstance().dropCompetitions(Constants.CompetitionType.CAREER);
-		
-		var achievement = getAchievement(comp);
-		if (better){
-			inform();
+		CompetitionDef def = comp.definition;
+		if (def != null){
+			for (AchievementGenerator gen : def.achieveGens)
+			{
+				List<Achievement> achievements = 
+					gen.getBetter(comp, DataManager.getInstance().getAchievements());
+
+				for (Achievement a : achievements)
+				{
+					DataManager.getInstance().storeAchievement(a);
+				}
+
+				for (Achievement a : achievements)
+				{
+					Toast.makeText(
+						this, 
+						AchievementManager.getString(this, a), 
+						Toast.LENGTH_LONG)
+						.show();
+				}
+			}
 		}
-		saveAchievement();
+
+		DataManager.getInstance().dropCompetitions(Constants.CompetitionType.CAREER);
 	}
 
 	@Override

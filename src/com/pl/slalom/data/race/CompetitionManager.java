@@ -8,6 +8,7 @@ import com.pl.slalom.Constants;
 import com.pl.slalom.R;
 import com.pl.slalom.data.Data;
 import com.pl.slalom.data.DataManager;
+import com.pl.slalom.data.race.achievement.*;
 
 public class CompetitionManager
 {
@@ -15,54 +16,76 @@ public class CompetitionManager
 	
 	private CompetitionDef getComp(int id, CompetitionType type,
 								   int[] slopeIds, int[] runCounts,
+								   ResultMeasureType[] resTypes,
 								   int nameRes, int descRes,
 								   int lockedExplainationRes,
-								   CompetitionAvailCalc availCalc)
+								   CompetitionAvailCalc availCalc,
+								   AchievementGenerator[] achievGens)
 	{
-		return new CompetitionDef(id, type, slopeIds, runCounts, 
+		return new CompetitionDef(id, type, slopeIds, runCounts, resTypes, 
 								  r.getString(nameRes), r.getString(descRes),
 								  r.getString(lockedExplainationRes),
-								  availCalc);
+								  availCalc, achievGens);
 	}
 	
 	public List<CompetitionDef> getAllCompetitions(Context context){
-		r = context.getResources();
-				
 		List<CompetitionDef> result = new LinkedList<CompetitionDef>();
 		
-		result.add(getComp(
-					   Constants.Events.Austria.evt_quali_1,
-					   CompetitionType.Qualification,
-					   new int[] {Constants.Slopes.Austria.hohewandwiese},
-					   new int[] {1},
-					   R.string.evt_au_quali1_name, R.string.evt_au_quali1_desc,
-					   R.string.evt_au_quali1_locked,
-					   new CompetitionAvailCalc(){
-						   public boolean isAvailable()
-						   { return true; }
-					   }
-				   ));
-		
-		result.add(getComp(
-				Constants.Events.Austria.evt_locchamp_1,
-				CompetitionType.LocalChamp,
-				new int[] {Constants.Slopes.Austria.hohewandwiese},
-				new int[] {2},
-				R.string.evt_au_champ1_name, R.string.evt_au_champ1_desc,
-				R.string.evt_au_champ1_locked,
-				new CompetitionAvailCalc(){
-					public boolean isAvailable()
-					{ return false; }
-				}
-			));
-		
+		result.add(getCompetitionDef(context, Constants.Events.Austria.evt_quali_1));
+		result.add(getCompetitionDef(context, Constants.Events.Austria.evt_locchamp_1));
 		
 		return result;
+	}
+
+	public CompetitionDef getCompetitionDef(Context context, int competitionId)
+	{
+		r = context.getResources();
+
+		switch (competitionId)
+		{
+			case Constants.Events.Austria.evt_quali_1:
+				return getComp(
+					Constants.Events.Austria.evt_quali_1,
+					CompetitionType.Qualification,
+					new int[] {Constants.Slopes.Austria.hohewandwiese},
+					new int[] {1},
+					new ResultMeasureType[] {ResultMeasureType.Turns},
+					R.string.evt_au_quali1_name, R.string.evt_au_quali1_desc,
+					R.string.evt_au_quali1_locked,
+					new CompetitionAvailCalc(){
+						public boolean isAvailable()
+						{ return true; }
+					},
+					new AchievementGenerator[] { 
+						new SlopeAchievementGenerator() 
+					}
+				);
+			case Constants.Events.Austria.evt_locchamp_1: 
+				return getComp(
+					Constants.Events.Austria.evt_locchamp_1,
+					CompetitionType.LocalChamp,
+					new int[] {Constants.Slopes.Austria.hohewandwiese},
+					new int[] {2},
+					new ResultMeasureType[] {ResultMeasureType.TurnsAndTime},
+					R.string.evt_au_champ1_name, R.string.evt_au_champ1_desc,
+					R.string.evt_au_champ1_locked,
+					new CompetitionAvailCalc(){
+						public boolean isAvailable()
+						{ return false; }
+					},
+					new AchievementGenerator[] { 
+						new SlopeAchievementGenerator(), 
+						new CompetitionAchievementGenerator() 
+					}
+				);
+			default:
+				return null;
+		}
 	}
 	
 	public Competition createFullCompetition(CompetitionDef def){
 		Data d = DataManager.getInstance().getData();
-		Competition result = new Competition();
+		Competition result = new Competition(def);
 		
 		result.currentRace = 0;
 		result.competitors = new LinkedList<Competitor>();
@@ -73,7 +96,8 @@ public class CompetitionManager
 		int i = 0;
 		for (int slopeId : def.tracks){
 			int rc = def.runCounts[i];
-			result.races.add(new Race(slopeId, i, rc, new RaceRun[plCount][rc]));
+			ResultMeasureType rt = def.resultTypes[i];
+			result.races.add(new Race(slopeId, i, rc, rt, new RaceRun[plCount][rc]));
 			i++;
 		}
 		
