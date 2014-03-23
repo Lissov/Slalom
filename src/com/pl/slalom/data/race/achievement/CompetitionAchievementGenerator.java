@@ -16,7 +16,7 @@ public class CompetitionAchievementGenerator extends AchievementGenerator
 		int achieveId = competition.definition.id + Constants.Achievement.CompetitionBase;
 		
 		int position = competition.getPlayerPosition(plN);
-		Achievement a = getAchievement(existing, achieveId);
+		Achievement a = AchievementManager.getAchievement(existing, achieveId);
 		if (a == null){
 			a = new Achievement();
 			a.identifier = achieveId;

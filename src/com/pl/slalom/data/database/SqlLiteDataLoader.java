@@ -12,7 +12,7 @@ import com.pl.slalom.data.achievment.*;
 
 public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 {
-	private static final int DB_VERSION = 9;
+	private static final int DB_VERSION = 10;
 	private Context context;
 	public SqlLiteDataLoader(Context context)
 	{
@@ -41,6 +41,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			case 7: firstS = 19; break;
 			case 8: firstS = 24; break;
 			case 9: firstS = 27; break;
+			case 10: firstS = 29; break;
 		}
 		
 		int lastS = 0;
@@ -54,6 +55,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			case 7: lastS = 18; break;
 			case 8: lastS = 23; break;
 			case 9: lastS = 26; break;
+			case 10: lastS = 28; break;
 		}	
 		Toast.makeText(context, "Upgrading database", Toast.LENGTH_SHORT).show();
 		runScripts(db, firstS, lastS);
@@ -173,7 +175,16 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		//26
 		"CREATE TABLE resultCompetition (" +
 		"achievementid," +
-		"place INTEGER)"
+		"place INTEGER)",
+		//v10
+		//27
+		"DROP TABLE achievement",
+		//28
+		"CREATE TABLE achievement (" +
+		"id INTEGER PRIMARY KEY AUTOINCREMENT," +
+		"playerId INTEGER," +
+		"achievementIdent INTEGER," +
+		"type INTEGER)"
 	};
 
 	@Override
@@ -487,12 +498,12 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			"Select a.id, a.achievementIdent, a.type, " +
 			"rs.turns, rs.time, " +
 			"rc.place " +
-			"from achivement a " + 
+			"from achievement a " + 
 			"left outer join resultSlope rs on rs.achievementid = a.id " +
 			"left outer join resultCompetition rc on rc.achievementid = a.id " +
 			"where a.playerId = " + playerId, null);
 		if (!cursor.moveToFirst())
-			return null;
+			return result;
 		do {
 			Achievement a = new Achievement();
 			a.id = cursor.getLong(0);
@@ -526,17 +537,21 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 	public void storeAchievement(long playerId, Achievement a){
 		SQLiteDatabase db = this.getReadableDatabase();
 	
-		if (a.id > 0){
+		db.execSQL("DELETE FROM resultSlope WHERE achievementid = " + a.id);
+		db.execSQL("DELETE FROM resultCompetition WHERE achievementid = " + a.id);			
 
+		if (a.id == 0){
+			db.execSQL("DELETE FROM achievement WHERE id = " + a.id);
+			
 			ContentValues v = new ContentValues();
 			v.put("playerId", playerId);
-			v.put("achievementIdend", a.identifier);
+			v.put("achievementIdent", a.identifier);
 			v.put("type", a.result.getType());
 			a.id = db.insert("achievement", null, v);
 			
 			insertUpdateResult(a, db, true);
 		} else{
-			insertUpdateResult(a, db, false);
+			insertUpdateResult(a, db, true);
 		}
 
 		db.close();
@@ -547,13 +562,13 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 		String tableName = "none";
 		if (a.result.getType() == SlopeResult.TYPE){
 			SlopeResult rr = (SlopeResult)a.result;
-			v.put("achievemetid", a.id);
+			v.put("achievementid", a.id);
 			v.put("turns", rr.turns);
 			v.put("time", rr.time);
 			tableName = "resultSlope";
 		}
 		if (a.result.getType() == CompetitionResult.TYPE){
-			v.put("achievemetid", a.id);
+			v.put("achievementid", a.id);
 			v.put("place", ((CompetitionResult)a.result).place);
 			tableName = "resultCompetition";			
 		}
@@ -562,7 +577,7 @@ public class SqlLiteDataLoader extends SQLiteOpenHelper implements IDataLoader
 			db.insert(tableName, null, v);
 		else
 			db.update(tableName, v, "achievementid = ",
-					  new String[] {String.valueOf(a.id)});
+					  	new String[] {String.valueOf(a.id)});
 	}
 
 	public void ExecuteNonQuery(String sql){

@@ -7,13 +7,4 @@ public abstract class AchievementGenerator
 {
 	public abstract List<Achievement> getBetter(
 		Competition competition, List<Achievement> existing);
-		
-	public Achievement getAchievement(List<Achievement> existing, int identifier){
-		for (Achievement a : existing){
-			if (a.identifier == identifier)
-				return a;
-		}
-		
-		return null;
-	}
 }

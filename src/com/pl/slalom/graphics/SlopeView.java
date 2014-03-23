@@ -1,5 +1,6 @@
 package com.pl.slalom.graphics;
 import android.view.*;
+import android.view.animation.Animation;
 import android.graphics.*;
 import android.widget.*;
 import com.pl.slalom.track.*;
@@ -39,6 +40,7 @@ public class SlopeView extends View
 	private String textStart;
 	private String textFinish;
 	private String textGo;
+	private Timer updateTimer;
 	
 	public SlopeView(Activity context, Game game, boolean drawNextStep, ICommandHandler cmdHandler){
 		super(context);
@@ -57,10 +59,22 @@ public class SlopeView extends View
 		
 		yProgress = -0.065f * game.slope.width;
 
-		Timer t = new Timer("sloperefresher");
-		t.schedule(new TimerTask(){
-				public void run() { redraw(); }
-			}, 1000, 40);
+	}
+	
+	public void resume(){
+		if (updateTimer == null){
+			updateTimer = new Timer("sloperefresher");
+		}
+
+		updateTimer.schedule(new TimerTask() {
+			public void run() {
+				redraw();
+			}
+		}, 1000, 40);		
+	}
+	
+	public void stop(){
+		updateTimer.cancel();
 	}
 
 	private void redraw(){
@@ -143,6 +157,7 @@ public class SlopeView extends View
 	
 	private void init(Canvas canvas){
 		float canvasHeight = this.getHeight();
+		float canvasWidth = this.getWidth();
 		float borderAbs = (canvasWidth * borderRel);
 		float scale = (canvasWidth - 2 * borderAbs) / slope.width;
 		

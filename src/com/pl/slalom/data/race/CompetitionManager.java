@@ -8,6 +8,8 @@ import com.pl.slalom.Constants;
 import com.pl.slalom.R;
 import com.pl.slalom.data.Data;
 import com.pl.slalom.data.DataManager;
+import com.pl.slalom.data.achievment.AchievementManager;
+import com.pl.slalom.data.achievment.SlopeResult;
 import com.pl.slalom.data.race.achievement.*;
 
 public class CompetitionManager
@@ -71,7 +73,10 @@ public class CompetitionManager
 					R.string.evt_au_champ1_locked,
 					new CompetitionAvailCalc(){
 						public boolean isAvailable()
-						{ return false; }
+						{ 
+							SlopeResult sr = AchievementManager.getSlopeAchievement(Constants.Slopes.Austria.hohewandwiese);
+							return sr != null && sr.turns <= 18;
+						}
 					},
 					new AchievementGenerator[] { 
 						new SlopeAchievementGenerator(), 
@@ -97,7 +102,12 @@ public class CompetitionManager
 		for (int slopeId : def.tracks){
 			int rc = def.runCounts[i];
 			ResultMeasureType rt = def.resultTypes[i];
-			result.races.add(new Race(slopeId, i, rc, rt, new RaceRun[plCount][rc]));
+			Race r = new Race(slopeId, i, rc, rt, new RaceRun[plCount][rc]);
+			for (int p = 0; p < plCount; p++){
+				for (int rn = 0; rn < rc; rn++)
+					r.playerRuns[p][rn] = new RaceRun(RunStatus.NotStarted);
+			}
+			result.races.add(r);
 			i++;
 		}
 		

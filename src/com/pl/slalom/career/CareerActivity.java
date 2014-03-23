@@ -84,28 +84,32 @@ public class CareerActivity extends TabActivity implements OnTabChangeListener
 	protected void onResume()
 	{
 		super.onResume();
-		
-		if (DataManager.getInstance().getStatus().RacePaused)
-		{
-			finish();
-			return;
-		}
 
-		Competition c = DataManager.getInstance().getCompetitionByType(Constants.CompetitionType.CAREER);
-		if (c != null)
-		{
-			if (c.isStarted()){
-				if (c.isFinished()){
-					processCompetitionFinished(c);
-				} else {
-					Intent irace = new Intent(this, RaceActivity.class);
-					irace.putExtra(Constants.Extra.CompetitionId, c.id);
-					startActivity(irace);
-					return;
+		try {
+			if (DataManager.getInstance().getStatus().RacePaused) {
+				finish();
+				return;
+			}
+
+			Competition c = DataManager.getInstance().getCompetitionByType(
+					Constants.CompetitionType.CAREER);
+			if (c != null) {
+				if (c.isStarted()) {
+					if (c.isFinished()) {
+						processCompetitionFinished(c);
+					} else {
+						Intent irace = new Intent(this, RaceActivity.class);
+						irace.putExtra(Constants.Extra.CompetitionId, c.id);
+						startActivity(irace);
+						return;
+					}
 				}
 			}
+		} catch (Exception ex) {
+			Toast.makeText(this, "CA_R:" + ex.getMessage(), Toast.LENGTH_LONG)
+					.show();
 		}
-	}	
+	}
 
 	@Override
 	public void onTabChanged(String arg0) {

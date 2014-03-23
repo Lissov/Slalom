@@ -9,7 +9,7 @@ public class RunResultComparator
 			case Turns:
 				return new Comparator<RunResult>(){
 					public int compare(RunResult rr1, RunResult rr2){
-						return Integer.compare(rr1.turns, rr2.turns);
+						return Integer.valueOf(rr1.turns).compareTo(Integer.valueOf(rr2.turns));
 					}
 				};
 			case Time:

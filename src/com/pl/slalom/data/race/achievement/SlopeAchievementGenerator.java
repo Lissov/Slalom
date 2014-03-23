@@ -24,7 +24,7 @@ public class SlopeAchievementGenerator extends AchievementGenerator
 
 			SlopeResult sr = new SlopeResult(bestr.turns, bestr.time);
 
-			Achievement ex = getAchievement(existing, achieveId);
+			Achievement ex = AchievementManager.getAchievement(existing, achieveId);
 	
 			if (isBetter(sr, ex, r)){
 				if (ex == null){

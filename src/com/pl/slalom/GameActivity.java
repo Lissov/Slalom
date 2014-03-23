@@ -1,4 +1,7 @@
 package com.pl.slalom;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.*;
 import android.os.*;
 import android.widget.*;
@@ -42,6 +45,18 @@ public class GameActivity extends Activity implements ICommandHandler, IMoveCall
 		}
 	}
 
+	@Override
+	protected void onResume() {
+		super.onResume();
+		slopeView.resume();
+	}
+	
+	@Override
+	protected void onPause() {
+		slopeView.stop();
+		super.onPause();
+	}
+	
 	@Override
 	public void onMove(int dx, int dy)
 	{

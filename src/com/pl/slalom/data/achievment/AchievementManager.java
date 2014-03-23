@@ -1,8 +1,11 @@
 package com.pl.slalom.data.achievment;
+import java.util.List;
+
 import com.pl.slalom.*;
 import android.content.*;
 import android.content.res.*;
 import com.pl.slalom.track.*;
+import com.pl.slalom.data.DataManager;
 import com.pl.slalom.data.race.*;
 
 public class AchievementManager
@@ -24,4 +27,27 @@ public class AchievementManager
 		
 		return "Unknown";
 	}
+	
+	public static SlopeResult getSlopeAchievement(int slopeId){
+		int achievementId = slopeId + Constants.Achievement.SlopeBase;
+		Achievement a = getAchievement(DataManager.getInstance().getAchievements(), achievementId);
+		
+		if (a != null)
+		{
+			SlopeResult sr = (SlopeResult)a.result;
+			return sr;
+		}
+		
+		return null;
+	}
+	
+	public static Achievement getAchievement(List<Achievement> existing, int identifier){
+		for (Achievement a : existing){
+			if (a.identifier == identifier)
+				return a;
+		}
+		
+		return null;
+	}
+
 }

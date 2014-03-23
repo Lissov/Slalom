@@ -6,8 +6,6 @@ import android.view.*;
 import android.content.*;
 import com.pl.slalom.data.race.*;
 import com.pl.slalom.data.*;
-import java.util.*;
-import com.pl.slalom.Utility.*;
 
 public class RaceActivity extends Activity
 {
