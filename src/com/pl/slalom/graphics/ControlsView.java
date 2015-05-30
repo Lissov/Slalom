@@ -12,6 +12,7 @@ public class ControlsView extends View
 	private Activity context;
 	private Game game;
 	ICommandHandler cmdHandler;
+	PlayerHandler plHandler;
 	private float btnSize;
 	private float baseX;
 	private float baseY;
@@ -31,11 +32,12 @@ public class ControlsView extends View
 	String textTurns;
 	String textTime;
 	
-	public ControlsView(Activity context, Game game, ICommandHandler handler){
+	public ControlsView(Activity context, Game game, ICommandHandler handler, PlayerHandler plHandler){
 		super(context);
 		this.context = context;
 		this.game = game;
 		this.cmdHandler = handler;
+		this.plHandler = plHandler;
 		
 		Timer t = new Timer("refresher");
 		t.schedule(new TimerTask(){
@@ -82,7 +84,9 @@ public class ControlsView extends View
 		canvas.drawText("" + game.getTime(), textSize * 4f, textSize * 4f, paintTextN);		
 	}
 	
-	private void drawMoves(Canvas canvas){ 	
+	private void drawMoves(Canvas canvas){
+		//if (!plHandler.canMove()) return;
+		
 		int mm = Constants.MaxPossibleMove;
 
 		Point lastM = game.route.getLastMove();
@@ -92,7 +96,7 @@ public class ControlsView extends View
 								getControlX(0), getControlY(0));
 		}
 							
-		boolean[][] posMoves = game.getPossibleMoves();
+		boolean[][] posMoves = plHandler.getPossibleMoves();
 		
 		int maxX = lastM.x > 0 ? lastM.x + mm : -lastM.x + mm;
 		int maxY = lastM.y > 0 ? lastM.y + mm : -lastM.y + mm;
@@ -174,7 +178,7 @@ public class ControlsView extends View
 				 return true;
 				 
 			int m = Constants.MaxPossibleMove;
-			boolean[][] posMoves = game.getPossibleMoves();
+			boolean[][] posMoves = plHandler.getPossibleMoves();
 			if (!posMoves[touched.x + m][touched.y + m])
 				return true;
 			

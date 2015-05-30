@@ -94,6 +94,5 @@ public class MoveCalculator {
 		
 		float maxS = i * handling;
 		return maxS <= 1 ? 1 : Math.round(maxS);
-	}
-	
+	}	
 }

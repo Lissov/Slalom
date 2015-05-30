@@ -16,6 +16,7 @@ public class SlopeView extends View
 	private Game game;
 	private Slope slope;
 	private Route route;
+	private PlayerHandler plHandler;
 	private int canvasWidth = 1000;
 	private float borderRel = 0.1f;
 	private float[] treeOffsets;
@@ -42,11 +43,12 @@ public class SlopeView extends View
 	private String textGo;
 	private Timer updateTimer;
 	
-	public SlopeView(Activity context, Game game, boolean drawNextStep, ICommandHandler cmdHandler){
+	public SlopeView(Activity context, Game game, boolean drawNextStep, ICommandHandler cmdHandler, PlayerHandler plHandler){
 		super(context);
 		this.slope = game.slope;
 		this.route = game.route;
 		this.game = game;
+		this.plHandler = plHandler;
 		this.context = context;
 		this.drawNextStep = drawNextStep;
 		this.cmdHandler = cmdHandler;
@@ -149,6 +151,7 @@ public class SlopeView extends View
 			drawBorders(canvas);
 			drawGates(canvas);
 			drawMakingMove(canvas);
+			drawDebugInfo(canvas); //TODO:remove
 			
 		} catch (Exception ex){
 			Toast.makeText(context, "Error SV2: " + ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -265,7 +268,8 @@ public class SlopeView extends View
 	public boolean onTouchEvent(MotionEvent event)
 	{
 		try{
-			if (event.getAction() == MotionEvent.ACTION_DOWN){
+			if (plHandler.canMove() 
+				&& event.getAction() == MotionEvent.ACTION_DOWN){
 				Point touched = getTouchedNextMove(event.getX(), event.getY());
 
 				if (touched == null)
@@ -301,10 +305,25 @@ public class SlopeView extends View
 		if (xs < -m  || xs > m || ys < -m || ys > m)
 			return null;
 
-		boolean[][] posMoves = game.getPossibleMoves();
+		boolean[][] posMoves = plHandler.getPossibleMoves();
 		if (!posMoves[xs + m][ys + m])
 			return null;
 			
 		return new Point(xs + lm.x, ys + lm.y);
+	}
+	
+	private void drawDebugInfo(Canvas canvas){
+		Paint pdt = new Paint();
+		pdt.setColor(Color.BLACK);
+		pdt.setTextSize(24);
+		
+		HashMap<String, String> di = plHandler.GetDebugInfo();
+		if (di == null) return;
+		
+		int y = 15;
+		for (String key : di.keySet()){
+			canvas.drawText(key + ": " + di.get(key), 10, y, pdt);
+			y += 30;
+		}
 	}
 }

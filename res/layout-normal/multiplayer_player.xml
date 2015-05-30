@@ -15,6 +15,12 @@
 		android:layout_height="fill_parent"
 		android:textSize="@dimen/text_size"/>
 	
+	<Spinner
+		android:id="@+id/mpPlayerType"
+		android:layout_width="100dp"
+		android:layout_height="fill_parent"
+		android:textSize="@dimen/text_size"/>
+
 	<EditText
 		android:id="@+id/mpPlayerName"
 		android:layout_width="fill_parent"

@@ -6,6 +6,8 @@ import android.view.*;
 import android.content.*;
 import com.pl.slalom.data.race.*;
 import com.pl.slalom.data.*;
+import com.pl.slalom.player.*;
+import com.pl.slalom.player.ai.*;
 
 public class RaceActivity extends Activity
 {
@@ -97,7 +99,9 @@ public class RaceActivity extends Activity
 			RunData rd = new RunData();
 	 		rd.slopeId = race.trackId;
 			rd.skiId = comp.competitors.get(compN).skiId;
+			// todo: why?
 			rd.playerId = Constants.MP_player_id; //DataManager.getInstance().getData().id;
+			rd.aiId = comp.competitors.get(compN).ai_id;
 			rd.resUpdater = new ResultUpdater(){
 				@Override
 				public void updateResult(RunResult result){
@@ -114,7 +118,7 @@ public class RaceActivity extends Activity
 			Toast.makeText(this, "Error RA3: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
-	
+
 	private void prepareNextTurn(){
 		int np = getNextPlayer();
 		if (np == -1){

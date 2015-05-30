@@ -31,6 +31,10 @@ public class Route
 			positionsY[currentPosition] - positionsY[prevPosition]);
 	}
 	
+	public Point getPosition(){
+		return new Point(positionsX[currentPosition], positionsY[currentPosition]);
+	}
+	
 	public void makeMove(int x, int y){
 		
 		currentPosition++;

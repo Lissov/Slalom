@@ -1,10 +1,13 @@
 package com.pl.slalom;
 import com.pl.slalom.data.achievment.*;
+import com.pl.slalom.player.ai.*;
 
 //import android.graphics.*;
 
 public class Constants
 {
+	public static final boolean allUnlocked = true;
+	
 	public static final boolean isFullVersion = true;
 	
 	public static class Extra{
@@ -32,8 +35,7 @@ public class Constants
 	public static final int MP_ModeTurns = 1;
 	public static final int MP_ModeTime = 2;
 	
-	public static final int AIID_Human = -1;
-	public static final int MP_player_id = -1;
+	public static final int MP_player_id = PlayerManager.AIID_Human;
 
 	public static final int[] experienceLevels = new int[] 
 		{ 50, 200, 500, 1000, 2000, 5000, 10000, 100000 };

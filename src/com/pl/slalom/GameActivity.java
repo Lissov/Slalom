@@ -12,6 +12,7 @@ import com.pl.slalom.data.race.*;
 import android.content.*;
 import android.content.res.*;
 import com.pl.slalom.Utility.*;
+import com.pl.slalom.player.ai.*;
 
 public class GameActivity extends Activity implements ICommandHandler, IMoveCallback
 {
@@ -19,6 +20,7 @@ public class GameActivity extends Activity implements ICommandHandler, IMoveCall
 	private SlopeView slopeView;
 	private ControlsView controlsView;
 	private RunData runData;
+	private PlayerHandler playerHandler;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -32,36 +34,39 @@ public class GameActivity extends Activity implements ICommandHandler, IMoveCall
 			runData = DataManager.getInstance().getRunData(rundataId);
 			
 			game = new Game(runData.slopeId, runData.skiId, runData.playerId, this);
-		
+			playerHandler = PlayerHandler.getHandler(game, runData.aiId);
+			
 			LinearLayout llSlope = (LinearLayout)findViewById(R.id.llSlope);
-			slopeView = new SlopeView(this, game, Constants.controlsOnSlope, this);
+			slopeView = new SlopeView(this, game, Constants.controlsOnSlope, this, playerHandler);
 			llSlope.addView(slopeView);
 		
 			LinearLayout llControls = (LinearLayout)findViewById(R.id.llControls);
-			controlsView = new ControlsView(this, game, this);
+			controlsView = new ControlsView(this, game, this, playerHandler);
 			llControls.addView(controlsView);
 		} catch (Exception ex){
 			Toast.makeText(this, "Error GA1: " + ex.getMessage(), Toast.LENGTH_LONG).show();
 		}
 	}
-
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
-		slopeView.resume();
+		if (slopeView != null)
+			slopeView.resume();
 	}
 	
 	@Override
 	protected void onPause() {
-		slopeView.stop();
+		if (slopeView != null)
+			slopeView.stop();
 		super.onPause();
 	}
 	
 	@Override
 	public void onMove(int dx, int dy)
 	{
-		game.makeMove(dx, dy);
-		
+		playerHandler.makeMove(dx, dy);
+
 		slopeView.invalidate();
 		controlsView.invalidate();
 	}
@@ -70,6 +75,7 @@ public class GameActivity extends Activity implements ICommandHandler, IMoveCall
 	public void moveComplete()
 	{
 		checkGameFinished();
+		playerHandler.moveComplete();
 	}
 
 	public void checkGameFinished(){

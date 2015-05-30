@@ -8,7 +8,7 @@ public class Competitor
 	public int countryId;
 	public int ai_id;
 	public int points;
-
+	
 	public Competitor(String name, int skiId, int countryId, int ai_id, int points)
 	{
 		this.name = name;

@@ -20,4 +20,6 @@ public class SkiManager
 				return null;
 		}
 	}
+	
+	public int[] AllSkiIds = new int[] {-1, -2, 10, 20};
 }

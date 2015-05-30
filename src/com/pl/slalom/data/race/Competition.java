@@ -2,6 +2,7 @@ package com.pl.slalom.data.race;
 import java.util.*;
 import com.pl.slalom.*;
 import com.pl.slalom.data.race.achievement.*;
+import com.pl.slalom.player.ai.*;
 
 public class Competition
 {
@@ -28,7 +29,7 @@ public class Competition
 	
 	public int getPlayerNum(){
 		for (int i = 0; i < competitors.size(); i++){
-			if (competitors.get(i).ai_id == Constants.AIID_Human)
+			if (competitors.get(i).ai_id == PlayerManager.AIID_Human)
 				return i;
 		}
 		return -1;

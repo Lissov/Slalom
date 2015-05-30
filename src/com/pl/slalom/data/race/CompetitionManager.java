@@ -11,6 +11,7 @@ import com.pl.slalom.data.DataManager;
 import com.pl.slalom.data.achievment.AchievementManager;
 import com.pl.slalom.data.achievment.SlopeResult;
 import com.pl.slalom.data.race.achievement.*;
+import com.pl.slalom.player.ai.*;
 
 public class CompetitionManager
 {
@@ -94,7 +95,9 @@ public class CompetitionManager
 		
 		result.currentRace = 0;
 		result.competitors = new LinkedList<Competitor>();
-		result.competitors.add(new Competitor(d.getFullName(), d.selectedSkiId, d.countryId, Constants.AIID_Human, 0));
+		result.competitors.add(new Competitor(d.getFullName(), d.selectedSkiId, d.countryId, 
+			PlayerManager.AIID_Human,	// todo: why only humans?
+			0));
 		int plCount = result.competitors.size();
 		
 		result.races = new LinkedList<Race>();

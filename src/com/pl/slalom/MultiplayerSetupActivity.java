@@ -137,7 +137,7 @@ public class MultiplayerSetupActivity extends Activity implements OnItemSelected
 		}
 		for (int i = plCount; i<count; i++){
 			if (playerViews[i] == null){
-				playerViews[i] = new MpPlayerCreate(this, avSkis, avCountries, "Player " + i);
+				playerViews[i] = new MpPlayerCreate(this, avSkis, avCountries, "Player " + (i+1));
 			}
 			llPlayers.addView(playerViews[i]);
 		}

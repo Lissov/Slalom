@@ -26,6 +26,18 @@
 		android:layout_width="300px"
 		android:layout_height="fill_parent"
 		android:textSize="@dimen/text_size"/>
+
+	<TextView
+		android:layout_width="120px"
+		android:layout_height="fill_parent"
+		android:layout_marginLeft="50px"
+		android:text="@string/mp_playerType" 
+		android:textSize="@dimen/text_size"/>
+	<Spinner
+		android:id="@+id/mpPlayerType"
+		android:layout_width="150px"
+		android:layout_height="fill_parent"
+		android:textSize="@dimen/text_size"/>
 	
 	<TextView
 		android:layout_width="120px"

@@ -47,8 +47,14 @@ public class DataManager
 	public List<ISki> getAvailableSkis(){
 		List<ISki> result = new LinkedList<ISki>();
 		SkiManager sm = new SkiManager();
-		for (int i = 0; i< data.availableSkiIds.size(); i++){
-			result.add(sm.getSki(data.availableSkiIds.get(i)));
+		if (Constants.allUnlocked){
+			for (int i : sm.AllSkiIds){
+				result.add(sm.getSki(i));
+			}
+		} else {
+			for (int i = 0; i< data.availableSkiIds.size(); i++){
+				result.add(sm.getSki(data.availableSkiIds.get(i)));
+			}
 		}
 		return result;
 	}

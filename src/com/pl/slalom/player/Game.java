@@ -59,11 +59,19 @@ public class Game
 	}
 	
 	public void makeMove(int dx, int dy){
+		if (!canMove(dx, dy)) return;
+		
 		makingX = dx;
 		makingY = dy;
 		moveStart = System.currentTimeMillis();
 		makingMove = true;
 		calcPossibleMoves();
+	}
+	
+	public boolean canMove(int dx, int dy){
+		int m = Constants.MaxPossibleMove;
+		Point last = route.getLastMove();
+		return possibleMoves[dx - last.x + m][dy - last.y + m];
 	}
 	
 	public float getMovePercentage(){
@@ -102,7 +110,7 @@ public class Game
 		}
 		
 		Gate nextg = slope.gates[route.passedCount];
-		while (getCross(nextg.position, nextg.leftPos, nextg.rightPos,
+		while (TrackCalculator.getCross(nextg.position, nextg.leftPos, nextg.rightPos,
 				prX, prY, x, y) == PassType.Pass){
 			route.passedCount++;
 		
@@ -117,19 +125,19 @@ public class Game
 		}
 					
 		for (int i = 0; i < slope.gates.length; i++){
-			PassType crossS = getCross(nextg.position, nextg.leftPos, nextg.rightPos,
+			PassType crossS = TrackCalculator.getCross(nextg.position, nextg.leftPos, nextg.rightPos,
 									   prX, prY, x, y);
 			if (crossS == PassType.Hit)
 				failed = true;
 				
-			PassType crossO = getCross(nextg.position, nextg.leftPos, nextg.rightPos,
+			PassType crossO = TrackCalculator.getCross(nextg.position, nextg.leftPos, nextg.rightPos,
 								 x, y, prX, prY);
 			if (crossO == PassType.Pass)
 				failed = true;
 		}
 		
 		Gate finish = slope.gates[slope.gates.length - 1];
-		PassType finalPass = getCross(finish.position, finish.leftPos, finish.rightPos, prX, prY, x, y);
+		PassType finalPass = TrackCalculator.getCross(finish.position, finish.leftPos, finish.rightPos, prX, prY, x, y);
 		if (finalPass == PassType.Miss || finalPass == PassType.Hit){
 			failed = true;
 		}
@@ -138,7 +146,7 @@ public class Game
 			int i = 0;
 			while (i < slope.tramplins.length){
 				Tramplin t = slope.tramplins[i];
-				PassType tpt = getCross(t.position, t.left, t.right, prX, prY, x, y);
+				PassType tpt = TrackCalculator.getCross(t.position, t.left, t.right, prX, prY, x, y);
 				if (tpt == PassType.Pass || tpt == PassType.Hit){
 					tramplinFly = t.power;
 					i = slope.tramplins.length; // stop in, only one tramplin per move
@@ -148,7 +156,7 @@ public class Game
 			
 			for (int j = 0; j < slope.tramplins.length; j++){
 				Tramplin t = slope.tramplins[j];
-				PassType tpt = getCross(t.position, t.left, t.right, x, y, prX, prY);
+				PassType tpt = TrackCalculator.getCross(t.position, t.left, t.right, x, y, prX, prY);
 				if (tpt == PassType.Pass || tpt == PassType.Hit){
 					failed = true; // crash in tramplin
 				}
@@ -160,23 +168,6 @@ public class Game
 		calcPossibleMoves();
 		
 		callback.moveComplete();
-	}
-	
-	enum PassType { None, Pass, Miss, Hit }
-	
-	private PassType getCross(float y, float left, float right,
-		int x1, int y1, int x2, int y2)
-	{
-		if (y < y1 || y > y2) 
-			return PassType.None;
-			
-		float crossX = x1 + (x2 - x1) * (y - y1) / (y2 - y1);
-		
-		if (crossX > left && crossX < right)
-			return PassType.Pass;
-		if (crossX == left || crossX == right)
-			return PassType.Hit;
-		return PassType.Miss;
 	}
 	
 	public float getTime(){

@@ -8,13 +8,16 @@ import com.pl.slalom.data.statics.*;
 import com.pl.slalom.player.ski.*;
 import java.util.*;
 import com.pl.slalom.Controls.Adapters.*;
+import com.pl.slalom.player.ai.*;
 
 public class MpPlayerCreate extends LinearLayout
 {
 	private TextView tvName;
 	private Spinner spSkis;
+	private Spinner spTypes;
 	private Spinner spCountry;
 	private List<ISki> skis;
+	private List<String> types;
 	private List<Country> countries;
 	
 	public MpPlayerCreate(Activity context, List<ISki> skis, List<Country> countries, String defaultName){
@@ -45,6 +48,16 @@ public class MpPlayerCreate extends LinearLayout
 		
 		spCountry = (Spinner)findViewById(R.id.mpPlayerCountry);
 		spCountry.setAdapter(CountryAdapter.getAdapter(context, countries));
+		
+		spTypes = (Spinner)findViewById(R.id.mpPlayerType);
+		types = new LinkedList<String>();
+		String[] typenames = new String[PlayerManager.AvailableTypes.length];
+		for (int i = 0; i < typenames.length; i++)
+			typenames[i] = PlayerManager.AvailableTypes[i].name;
+		ArrayAdapter<String> adapterT = new ArrayAdapter<String>(
+			context, android.R.layout.simple_spinner_item, typenames);
+		adapterT.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spTypes.setAdapter(adapterT);
 	}
 	
 	public Competitor getCompetitor(){
@@ -52,7 +65,7 @@ public class MpPlayerCreate extends LinearLayout
 			String.valueOf(tvName.getText()),
 			skis.get(spSkis.getSelectedItemPosition()).getId(),
 			countries.get(spCountry.getSelectedItemPosition()).id,
-			Constants.AIID_Human,
+			PlayerManager.AvailableTypes[spTypes.getSelectedItemPosition()].type,
 			0);
 	}
 }
