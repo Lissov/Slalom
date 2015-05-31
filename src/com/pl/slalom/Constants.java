@@ -21,7 +21,7 @@ public class Constants
 	}
 	
 	public static final int MaxRecordedSteps = 1000;
-	public static final int MaxPossibleMove = 2;
+	public static final int MaxPossibleMove = 1;
 	
 	public static final boolean controlsOnSlope = true;
 	

@@ -94,6 +94,7 @@ public class StatisticalPlayer extends ArtIntelBase
 	protected void ThinkTheMove(boolean[][] posMoves, Point lm, int reqNum){
 		try {
 			debugMap.put("status", "thinking started");
+			debugMap.put("foundBest", "");
 			
 			int m = Constants.MaxPossibleMove;
 		
@@ -107,13 +108,13 @@ public class StatisticalPlayer extends ArtIntelBase
 			ThinkingContext context = new ThinkingContext();
 			context.allowedProb = 1f;
 			context.maxReachedProb = 0f;
-			context.maxDeep = 3;
+			context.maxDeep = 8;
 			context.reqNum = reqNum;
 			context.slope = game.slope;
 			context.reachedFinishAtDeep = Integer.MAX_VALUE;
 			context.bestReachedGate = 0;
 			context.bestReachedPos = 0;
-			ThinkMoveFromHere(game.route.getPosition(), lm, game.route.passedCount,
+			ThinkMoveFromHere(game.route.getPosition(), lm, game.route.passedCount - 1,
 				probs, 1f, 0, null, context);
 			
 			debugMap.put("status", "thinking ended");
@@ -152,9 +153,8 @@ public class StatisticalPlayer extends ArtIntelBase
 		Point firstMove,
 		ThinkingContext context) throws InterruptedException
 	{
-		debugMap.put("Think of", position.x + ":" + position.y + " -> " + lastMove.x + ":" + lastMove.y);
-		Thread.sleep(500);
-		
+		if (firstMove != null)
+			debugMap.put("Think of ", firstMove.x + ":" + firstMove.y + " -> " + deep);
 		
 		if (deep == context.maxDeep){
 			CheckVariant(firstMove, position, currentProb, lastPassedGate, context);
@@ -166,14 +166,17 @@ public class StatisticalPlayer extends ArtIntelBase
 			for (int y = 0; y < 2*m+1; y++){
 				
 				float p = probs[x][y];
+				if (p == 0f) continue;
 				float np = p * currentProb;
-				if (np <= context.maxReachedProb) continue; // too bad
+				if (np < context.maxReachedProb) continue; // too bad
 		
 				int resGates = lastPassedGate;
 				
 				Point move = new Point(lastMove.x + x - m, lastMove.y + y - m);
 				if (move.y < minYMoveAllowed) continue; // 
 				if (move.x == 0 && move.y == 0 && lastMove.x == 0 && lastMove.y == 0) continue; // no infinite stops;
+				
+				Point fMove = firstMove == null ? move : firstMove;
 				
 				Point newPos = new Point(position.x + move.x, position.y + move.y);
 				if (newPos.x <= 0 || newPos.x >= context.slope.width) continue; // out of track limits
@@ -188,7 +191,7 @@ public class StatisticalPlayer extends ArtIntelBase
 					// check finished
 					if (resGates == context.slope.gates.length-1){
 						if (deep < context.reachedFinishAtDeep){
-							setBestMove(firstMove.x, firstMove.y, context.reqNum);
+							setBestMove(fMove.x, fMove.y, context.reqNum);
 							context.reachedFinishAtDeep = deep;
 							if (context.maxReachedProb <= context.allowedProb){
 								if (np >= context.allowedProb)
@@ -206,8 +209,9 @@ public class StatisticalPlayer extends ArtIntelBase
 					resGates,
 					getProbsForMove(move.x, move.y), // todo - what if out of range?
 					np, deep+1,
-					firstMove == null ? move : firstMove,
+					fMove,
 					context);
+				float a = 0;
 			}
 		}
 	}
@@ -256,6 +260,7 @@ public class StatisticalPlayer extends ArtIntelBase
 			if (bestMove == null) return;
 			bestMove.x = x;
 			bestMove.y = y;
+			debugMap.put("foundBest", x + ":" + y);
 		} finally{
 			lock.unlock();
 		}
@@ -296,6 +301,10 @@ public class StatisticalPlayer extends ArtIntelBase
 	}
 	
 	private void updateStats(){
+		
+		if (game.route.currentPosition == 0) // first step is different
+			return;
+		
 		boolean[][] posMoves = game.getPossibleMoves();
 		Point lm = game.route.getLastMove();
 		
